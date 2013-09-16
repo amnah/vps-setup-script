@@ -22,11 +22,13 @@ pubkey=""
 # fix resolv.conf for some reason
 echo -e "nameserver 8.8.8.8\nnameserver 4.2.2.2" > /etc/resolv.conf 
 
-# update
-# python-software-properties needed for add-apt-repository
+# update and 
 sudo apt-get update 
 sudo apt-get -y upgrade 
-sudo apt-get -y install python-software-properties nano
+
+# nano + other apps for add-apt-repository cmd
+# http://stackoverflow.com/a/16032073
+sudo apt-get -y install nano python-software-properties software-properties-common
 
 # update time
 ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
@@ -55,8 +57,8 @@ sed -i "s/--output mail/--output mail --mailto $email --detail high/g" /etc/cron
 
 # git php nginx mysql
 # http://www.howtoforge.com/installing-nginx-with-php5-and-php-fpm-and-mysql-support-lemp-on-ubuntu-12.04-lts
-sudo add-apt-repository ppa:git-core/ppa 
-sudo add-apt-repository ppa:ondrej/php5 
+sudo add-apt-repository -y ppa:git-core/ppa 
+sudo add-apt-repository -y ppa:ondrej/php5 
 sudo apt-get update
 sudo apt-get -y install git mysql-server mysql-client nginx php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-memcache php-apc php5-curl curl 
 #sudo apt-get -y install php5-suhosin php5-intl php-pear php5-imap php5-ming php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl
@@ -70,10 +72,10 @@ rm /etc/nginx/sites-enabled/default
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 wget https://raw.github.com/amnah/vps-setup-script/master/files/nginx.conf 
-wget https://raw.github.com/amnah/vps-setup-script/master/files/_default 
-wget https://raw.github.com/amnah/vps-setup-script/master/files/_phpMyAdmin 
-wget https://raw.github.com/amnah/vps-setup-script/master/files/_common
-wget https://raw.github.com/amnah/vps-setup-script/master/files/example.site
+wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_default 
+wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_phpMyAdmin 
+wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_common
+wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/example.site
 mv nginx.conf /etc/nginx/nginx.conf
 mv _default /etc/nginx/sites-available/_default
 mv _phpMyAdmin /etc/nginx/sites-available/_phpMyAdmin
@@ -82,7 +84,7 @@ mv example.site /etc/nginx/sites-available/example.site
 
 # set up data dir
 mkdir /data && mkdir /data/sites && mkdir /data/logs
-ln -s /etc/nginx/nginx.conf nginx.conf
+ln -s /etc/nginx/nginx.conf /data/nginx.conf
 ln -s /etc/nginx/sites-available/ /data
 ln -s /etc/nginx/sites-enabled/ /data
 ln -s /etc/nginx/sites-available/_default /etc/nginx/sites-enabled/_default
@@ -92,6 +94,7 @@ ln -s /etc/nginx/sites-available/_phpMyAdmin /etc/nginx/sites-enabled/_phpMyAdmi
 # downloads file as "download"
 wget http://sourceforge.net/projects/phpmyadmin/files/latest/download
 unzip download 
+rm -f download
 mv phpMyAdmin* /data
 ln -s /data/phpMyAdmin* /data/phpMyAdmin
 wget https://raw.github.com/amnah/vps-setup-script/master/files/config.inc.php
