@@ -60,7 +60,7 @@ sed -i "s/--output mail/--output mail --mailto $email --detail high/g" /etc/cron
 sudo add-apt-repository -y ppa:git-core/ppa 
 sudo add-apt-repository -y ppa:ondrej/php5 
 sudo apt-get update
-sudo apt-get -y install git mysql-server mysql-client nginx php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-memcache php-apc php5-curl curl 
+sudo apt-get -y --force-yes install git mysql-server mysql-client nginx php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-memcache php-apc php5-curl curl 
 #sudo apt-get -y install php5-suhosin php5-intl php-pear php5-imap php5-ming php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl
 #nano /etc/php5/cli/conf.d/ming.ini # change "#" to ";"
 
