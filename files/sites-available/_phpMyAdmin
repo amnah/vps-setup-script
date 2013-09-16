@@ -2,8 +2,8 @@
 server {
     server_name dbadmin.*;
     root /data/phpMyAdmin;
-    access_log /data/log/phpMyAdmin/access.log;
-    error_log /data/log/phpMyAdmin/error.log;
+    access_log /data/logs/phpMyAdmin/access.log;
+    error_log /data/logs/phpMyAdmin/error.log;
     include /etc/nginx/sites-available/_common;
     
     location / {
