@@ -1,0 +1,31 @@
+
+  
+# -----------------------------------------------------
+# www -> redirect to main site
+server {
+    include /etc/nginx/sites-available/_common;
+    server_name www.example.site;
+    return 301 $scheme://example.site$request_uri;
+}      
+# -----------------------------------------------------
+# main site
+server {
+    server_name example.site;
+    root /data/sites/example.site;
+    access_log /data/logs/example.site/access.log;
+    error_log /data/logs/example.site/error.log;
+    include /etc/nginx/sites-available/_common;
+    
+    location / {
+        # default
+		try_files $uri $uri/ /index.php;
+		
+		# laravel, joomla, drupal, etc
+        # http://wiki.nginx.org/Pitfalls (Front Controller Pattern based packages)
+		#try_files $uri $uri/ /index.php?q=$uri&$args;
+        
+        # wordpress
+        # http://wiki.nginx.org/WordPress
+        #try_files $uri $uri/ /index.php?$args;
+    }
+}
