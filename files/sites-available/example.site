@@ -18,11 +18,11 @@ server {
     
     location / {
         # default
-		try_files $uri $uri/ /index.php;
-		
-		# laravel, joomla, drupal, etc
+        try_files $uri $uri/ /index.php;
+        
+        # laravel, joomla, drupal, etc
         # http://wiki.nginx.org/Pitfalls (Front Controller Pattern based packages)
-		#try_files $uri $uri/ /index.php?q=$uri&$args;
+        #try_files $uri $uri/ /index.php?q=$uri&$args;
         
         # wordpress
         # http://wiki.nginx.org/WordPress

@@ -116,11 +116,16 @@ service php5-fpm reload
 service nginx restart
 
 # change owners and permissions
-chmod -R 644 /data/sites
 chown -R www-data.www-data /data/sites
+find /data/sites -type f -print0 | xargs -0 chmod 0644
+find /data/sites -type d -print0 | xargs -0 chmod 0755
 
 # echo
 echo -e "\n------------------------------------------"
 echo -e "\nNow rename and edit /etc/nginx/sites-available/example.site"
 echo -e "\nAnd don't forget to symbolic link it to /etc/nginx/sites-enabled"
+echo -e "\n"
+echo -e "\ncp /etc/nginx/sites-available/example.site /etc/nginx/sites-available/NEWSITE"
+echo -e "\nsed -i s/example.site/NEWSITE/g /etc/nginx/sites-available/NEWSITE"
+echo -e "\nln -s /etc/nginx/sites-available/NEWSITE /etc/nginx/sites-enabled/"
 echo -e "\n------------------------------------------"
