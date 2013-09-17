@@ -111,10 +111,13 @@ cat /dev/null > /var/mail/root
 service apache2 stop
 update-rc.d -f apache2 remove
 service ssh restart
-service apache2 stop
-service nginx restart
+service apache2 stop # just in case
 service php5-fpm reload
+service nginx restart
 
+# change owners and permissions
+chmod -R 644 /data/sites
+chown -R www-data.www-data /data/sites
 
 # echo
 echo -e "\n------------------------------------------"
