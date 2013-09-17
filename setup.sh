@@ -96,10 +96,10 @@ unzip -q download
 rm -f download
 mv phpMyAdmin* /data
 wget https://raw.github.com/amnah/vps-setup-script/master/files/config.inc.php
+ln -s /data/phpMyAdmin* /data/phpMyAdmin
 mv config.inc.php /data/phpMyAdmin 
 
 # setup phpMyAdmin in nginx
-ln -s /data/phpMyAdmin* /data/phpMyAdmin
 mkdir /data/logs/phpMyAdmin
 touch /data/logs/phpMyAdmin/access.log
 touch /data/logs/phpMyAdmin/error.log
