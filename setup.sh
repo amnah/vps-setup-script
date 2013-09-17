@@ -59,7 +59,7 @@ sed -i "s/--output mail/--output mail --mailto $email --detail high/g" /etc/cron
 # http://www.howtoforge.com/installing-nginx-with-php5-and-php-fpm-and-mysql-support-lemp-on-ubuntu-12.04-lts
 sudo add-apt-repository -y ppa:git-core/ppa 
 sudo apt-get update
-sudo apt-get -y install git php5 mysql-server mysql-client nginx php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-memcache php-apc php5-curl curl 
+sudo apt-get -y install git php5 php5-cli mysql-server mysql-client nginx php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-memcache php-apc php5-curl curl 
 #sudo apt-get -y install php5-suhosin php5-intl php-pear php5-imap php5-ming php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl
 #nano /etc/php5/cli/conf.d/ming.ini # change "#" to ";"
 
@@ -89,15 +89,20 @@ ln -s /etc/nginx/sites-enabled/ /data
 ln -s /etc/nginx/sites-available/_default /etc/nginx/sites-enabled/_default
 ln -s /etc/nginx/sites-available/_phpMyAdmin /etc/nginx/sites-enabled/_phpMyAdmin
 
-# install latest phpmyadmin
-# downloads file as "download"
+# download and install/move phpMyAdmin
+# note: file gets named "download"
 wget http://sourceforge.net/projects/phpmyadmin/files/latest/download
 unzip -q download 
 rm -f download
 mv phpMyAdmin* /data
-ln -s /data/phpMyAdmin* /data/phpMyAdmin
 wget https://raw.github.com/amnah/vps-setup-script/master/files/config.inc.php
 mv config.inc.php /data/phpMyAdmin 
+
+# setup phpMyAdmin in nginx
+ln -s /data/phpMyAdmin* /data/phpMyAdmin
+mkdir /data/logs/phpMyAdmin
+touch /data/logs/phpMyAdmin/access.log
+touch /data/logs/phpMyAdmin/error.log
 
 # empty out mail file
 cat /dev/null > /var/mail/root
@@ -106,8 +111,10 @@ cat /dev/null > /var/mail/root
 service apache2 stop
 update-rc.d -f apache2 remove
 service ssh restart
-service nginx start
+service apache2 stop
+service nginx restart
 service php5-fpm reload
+
 
 # echo
 echo -e "\n------------------------------------------"
