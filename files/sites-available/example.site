@@ -1,6 +1,13 @@
 
   
 # -----------------------------------------------------
+# invalid subdomains - redirect to main site
+#server {
+#    include /etc/nginx/sites-available/_common;
+#    server_name "~^(?<subdomain>\w+)\.example\.site$";  # note the escaped period - example\.site
+#    return 301 $scheme://example.site$request_uri;
+#}
+# -----------------------------------------------------
 # www -> redirect to main site
 server {
     include /etc/nginx/sites-available/_common;
