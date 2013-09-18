@@ -26,7 +26,7 @@ ln -s /etc/nginx/sites-available/$site /etc/nginx/sites-enabled/
 # change owner and permissions
 chown -R www-data.www-data /data/sites/$site
 find /data/sites/$site -type d -print0 | xargs -0 chmod 0755
-find /data/sites/$site -type f -print0 | xargs -0 chmod 0755
+find /data/sites/$site -type f -print0 | xargs -0 chmod 0644
 
 # reload nginx 
 service nginx reload
