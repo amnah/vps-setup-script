@@ -73,7 +73,7 @@ mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 wget https://raw.github.com/amnah/vps-setup-script/master/files/nginx.conf 
 wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_baseApps 
 wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_common
-wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/example.site
+wget https://raw.github.com/amnah/vps-setup-script/master/files/example.site
 mv nginx.conf /etc/nginx/nginx.conf
 mv _baseApps /etc/nginx/sites-available/_baseApps
 mv _common /etc/nginx/sites-available/_common
