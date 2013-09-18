@@ -99,13 +99,19 @@ wget https://raw.github.com/amnah/vps-setup-script/master/files/config.inc.php
 ln -s /data/phpMyAdmin* /data/phpMyAdmin
 mv config.inc.php /data/phpMyAdmin 
 
-# setup phpMyAdmin in nginx
+# setup default + phpMyAdmin logs in nginx
+mkdir /data/logs/_
+touch /data/logs/_/access.log
+touch /data/logs/_/error.log
 mkdir /data/logs/phpMyAdmin
 touch /data/logs/phpMyAdmin/access.log
 touch /data/logs/phpMyAdmin/error.log
 
 # empty out mail file
 cat /dev/null > /var/mail/root
+
+# add logrotate to site logs
+sed -i 's/*.log/*.log \/data\/logs\/*\/*.log/g' /etc/logrotate.d/nginx
 
 # update services
 service apache2 stop
@@ -120,10 +126,14 @@ chown -R www-data.www-data /data/sites
 find /data/sites -type d -print0 | xargs -0 chmod 0755
 #find /data/sites -type f -print0 | xargs -0 chmod 0644 # NOPE dont need this
 
+# download site.sh
+wget https://raw.github.com/amnah/vps-setup-script/master/site.sh
+chmod 700 site.sh
+
 # echo
 echo -e "------------------------------------------"
-echo -e "Now you go create a site. Download, modify, and run:\n"
-echo -e "wget https://raw.github.com/amnah/vps-setup-script/master/site.sh"
+echo -e "Now go! Modify and run:\n"
+echo -e "./site.sh"
 echo -e "------------------------------------------"
 echo -e "setup.sh finished"
 echo -e "------------------------------------------"
