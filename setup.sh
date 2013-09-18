@@ -123,7 +123,8 @@ chown -R www-data.www-data /data/sites
 find /data/sites -type d -print0 | xargs -0 chmod 0755
 #find /data/sites -type f -print0 | xargs -0 chmod 0644 # NOPE dont need this
 
-# download site.sh
+# clean up and download site.sh
+chmod 400 setup.sh
 wget https://raw.github.com/amnah/vps-setup-script/master/site.sh
 chmod 700 site.sh
 
