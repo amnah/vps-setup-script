@@ -117,8 +117,8 @@ service nginx restart
 
 # change owner and permissions
 chown -R www-data.www-data /data/sites
-#find /data/sites -type f -print0 | xargs -0 chmod 0644 # don't need, no folders yet
 find /data/sites -type d -print0 | xargs -0 chmod 0755
+find /data/sites -type f -print0 | xargs -0 chmod 0644
 
 # echo
 echo -e "------------------------------------------"
