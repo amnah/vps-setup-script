@@ -19,8 +19,8 @@ touch /data/logs/$site/error.log
 echo "hello" > /data/sites/$site/index.php
 
 # copy server block
-cp /etc/nginx/sites-available/example.site /etc/nginx/sites-available/$site
-sed -i s/example.site/$site/g /etc/nginx/sites-available/$site
+cp /data/example.site /etc/nginx/sites-available/$site
+sed -i "s/example.site/$site/g" /etc/nginx/sites-available/$site
 ln -s /etc/nginx/sites-available/$site /etc/nginx/sites-enabled/
 
 # change owner and permissions

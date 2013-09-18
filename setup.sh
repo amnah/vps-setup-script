@@ -49,7 +49,7 @@ chmod 700 ~/.ssh
 chmod 600 ~/.ssh/authorized_keys 
 chown -R root.root .ssh
 echo -e "\n\nPermitRootLogin no\nPasswordAuthentication no\n#AllowUsers username@(your-ip) username@(another-ip-if-any)" >> /etc/ssh/sshd_config
-sed -i 's/Port 22/Port 5522/g' /etc/ssh/sshd_config
+sed -i "s/Port 22/Port 5522/g" /etc/ssh/sshd_config
 
 # fail2ban and logwatch
 sudo apt-get -y install fail2ban logwatch
@@ -71,23 +71,20 @@ rm /etc/nginx/sites-enabled/default
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 wget https://raw.github.com/amnah/vps-setup-script/master/files/nginx.conf 
-wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_default 
-wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_phpMyAdmin 
+wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_baseApps 
 wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_common
 wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/example.site
 mv nginx.conf /etc/nginx/nginx.conf
-mv _default /etc/nginx/sites-available/_default
-mv _phpMyAdmin /etc/nginx/sites-available/_phpMyAdmin
+mv _baseApps /etc/nginx/sites-available/_baseApps
 mv _common /etc/nginx/sites-available/_common
-mv example.site /etc/nginx/sites-available/example.site
 
 # set up data dir
 mkdir /data && mkdir /data/sites && mkdir /data/logs
 ln -s /etc/nginx/nginx.conf /data/nginx.conf
 ln -s /etc/nginx/sites-available/ /data
 ln -s /etc/nginx/sites-enabled/ /data
-ln -s /etc/nginx/sites-available/_default /etc/nginx/sites-enabled/_default
-ln -s /etc/nginx/sites-available/_phpMyAdmin /etc/nginx/sites-enabled/_phpMyAdmin
+ln -s /etc/nginx/sites-available/_baseApps /etc/nginx/sites-enabled/_baseApps
+mv example.site /data/example.site
 
 # download and install/move phpMyAdmin
 # note: file gets named "download"
@@ -111,7 +108,7 @@ touch /data/logs/phpMyAdmin/error.log
 cat /dev/null > /var/mail/root
 
 # add logrotate to site logs
-sed -i 's/*.log/*.log \/data\/logs\/*\/*.log/g' /etc/logrotate.d/nginx
+sed -i "s/*.log/*.log \/data\/logs\/*\/*.log/g" /etc/logrotate.d/nginx
 
 # update services
 service apache2 stop

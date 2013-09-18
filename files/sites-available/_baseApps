@@ -1,0 +1,43 @@
+
+# -----------------------------------------------------
+# default/invalid server
+# -----------------------------------------------------
+server {
+    listen 80 default_server;
+    server_name _;
+    
+    log_format combined_server
+        '$remote_addr - $remote_user [$time_local] '
+        '[$http_host] [$server_name] '
+        '"$request" $status $body_bytes_sent '
+        '"$http_referer" "$http_user_agent"';
+    
+	access_log /data/logs/_/access.log combined_server;
+	error_log /data/logs/_/error.log combined_server;
+    
+    return 444;
+}
+
+# -----------------------------------------------------
+# phpMyAdmin
+# -----------------------------------------------------
+server {
+    server_name dbadmin.*;
+    root /data/phpMyAdmin;
+    access_log /data/logs/phpMyAdmin/access.log;
+    error_log /data/logs/phpMyAdmin/error.log;
+    include /etc/nginx/sites-available/_common;
+    
+    location / {
+        # default
+        try_files $uri $uri/ /index.php;
+        
+        # laravel, joomla, drupal, etc
+        # http://wiki.nginx.org/Pitfalls (Front Controller Pattern based packages)
+        #try_files $uri $uri/ /index.php?q=$uri&$args;
+        
+        # wordpress
+        # http://wiki.nginx.org/WordPress
+        #try_files $uri $uri/ /index.php?$args;
+    }
+}
