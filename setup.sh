@@ -123,7 +123,7 @@ find /data/sites -type d -print0 | xargs -0 chmod 0755
 # echo
 echo -e "------------------------------------------"
 echo -e "Now you go create a site. Download, modify, and run:\n"
-echo -e "wget https://raw.github.com/amnah/vps-setup-script/master/setup-site.sh"
+echo -e "wget https://raw.github.com/amnah/vps-setup-script/master/site.sh"
 echo -e "------------------------------------------"
 echo -e "setup.sh finished"
 echo -e "------------------------------------------"
