@@ -112,7 +112,10 @@ wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/proxy.c
 wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-auth.conf -O /etc/fail2ban/filter.d/nginx-auth.conf
 wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-login.conf -O /etc/fail2ban/filter.d/nginx-login.conf
 wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-noscript.conf -O /etc/fail2ban/filter.d/nginx-noscript.conf
-wget https://raw.github.com/amnah/vps-setup-script/master/files/jail.local -O /etc/fail2ban/jail.local
+wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-dos.conf -O /etc/fail2ban/filter.d/nginx-dos.conf
+wget https://raw.github.com/amnah/vps-setup-script/master/files/jail.local.tmp -O /etc/fail2ban/jail.local.tmp
+cat /etc/fail2ban/jail.conf /etc/fail2ban/jail.local.tmp > /etc/fail2ban/jail.local
+rm /etc/fail2ban/jail.local.tmp
 
 # update services
 service fail2ban restart
