@@ -70,13 +70,10 @@ sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
 rm /etc/nginx/sites-enabled/default
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
-wget https://raw.github.com/amnah/vps-setup-script/master/files/nginx.conf 
-wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_baseApps 
-wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_common
-wget https://raw.github.com/amnah/vps-setup-script/master/files/example.site
-mv nginx.conf /etc/nginx/nginx.conf
-mv _baseApps /etc/nginx/sites-available/_baseApps
-mv _common /etc/nginx/sites-available/_common
+wget https://raw.github.com/amnah/vps-setup-script/master/files/nginx.conf  -O /etc/nginx/nginx.conf
+wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_baseApps -O /etc/nginx/sites-available/_baseApps
+wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_common -O /etc/nginx/sites-available/_common
+
 
 # set up data dir
 mkdir /data && mkdir /data/sites && mkdir /data/logs
@@ -84,7 +81,7 @@ ln -s /etc/nginx/nginx.conf /data/nginx.conf
 ln -s /etc/nginx/sites-available/ /data
 ln -s /etc/nginx/sites-enabled/ /data
 ln -s /etc/nginx/sites-available/_baseApps /etc/nginx/sites-enabled/_baseApps
-mv example.site /data/example.site
+wget https://raw.github.com/amnah/vps-setup-script/master/files/example.site -O /data/example.site
 
 # download and install/move phpMyAdmin
 # note: file gets named "download"
@@ -92,9 +89,8 @@ wget http://sourceforge.net/projects/phpmyadmin/files/latest/download
 unzip -q download 
 rm -f download
 mv phpMyAdmin* /data
-wget https://raw.github.com/amnah/vps-setup-script/master/files/config.inc.php
 ln -s /data/phpMyAdmin* /data/phpMyAdmin
-mv config.inc.php /data/phpMyAdmin 
+wget https://raw.github.com/amnah/vps-setup-script/master/files/config.inc.php -O /data/phpMyAdmin/config.inc.php
 
 # setup default + phpMyAdmin logs in nginx
 mkdir /data/logs/_
@@ -110,7 +106,16 @@ cat /dev/null > /var/mail/root
 # add logrotate to site logs
 sed -i "s/*.log/*.log \/data\/logs\/*\/*.log/g" /etc/logrotate.d/nginx
 
+# add fail2ban configurations
+# http://snippets.aktagon.com/snippets/554-how-to-secure-an-nginx-server-with-fail2ban
+wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/proxy.conf -O /etc/fail2ban/filter.d/proxy.conf
+wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-auth.conf -O /etc/fail2ban/filter.d/nginx-auth.conf
+wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-login.conf -O /etc/fail2ban/filter.d/nginx-login.conf
+wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-noscript.conf -O /etc/fail2ban/filter.d/nginx-noscript.conf
+wget https://raw.github.com/amnah/vps-setup-script/master/files/jail.local -O /etc/fail2ban/jail.local
+
 # update services
+service fail2ban restart
 service apache2 stop
 update-rc.d -f apache2 remove
 service ssh restart

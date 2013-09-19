@@ -1,0 +1,56 @@
+
+# http://snippets.aktagon.com/snippets/554-how-to-secure-an-nginx-server-with-fail2ban
+
+[nginx-auth]
+enabled = true
+filter = nginx-auth
+action = iptables-multiport[name=NoAuthFailures, port="http,https"]
+logpath = /data/logs/*/*error*.log
+bantime = 600 # 10 minutes
+maxretry = 6
+
+[nginx-login]
+enabled = true
+filter = nginx-login
+action = iptables-multiport[name=NoLoginFailures, port="http,https"]
+logpath = /data/logs/*/*access*.log
+bantime = 600 # 10 minutes
+maxretry = 6
+ 
+[nginx-badbots]
+enabled  = true
+filter = apache-badbots
+action = iptables-multiport[name=BadBots, port="http,https"]
+logpath = /data/logs/*/*access*.log
+bantime = 86400 # 1 day
+maxretry = 1
+ 
+[nginx-noscript]
+enabled = true
+action = iptables-multiport[name=NoScript, port="http,https"]
+filter = nginx-noscript
+logpath = /data/logs/*/*access*.log
+maxretry = 6
+bantime  = 86400 # 1 day
+ 
+[nginx-proxy]
+enabled = true
+action = iptables-multiport[name=NoProxy, port="http,https"]
+filter = nginx-proxy
+logpath = /data/logs/*/*access*.log
+maxretry = 0
+bantime  = 86400 # 1 day
+
+
+# http://serverfault.com/questions/420895/how-to-use-fail2ban-for-nginx
+# Based on apache-badbots but a simple IP check (any IP requesting more than
+# 240 pages in 60 seconds, or 4p/s average, is suspicious)
+# Block for two full days.
+# @author Yannick Warnier
+enabled = true
+port    = http,https
+filter  = nginx-dos
+logpath = /data/logs/*/*access*.log
+findtime = 60
+bantime  = 3600 # changed to 4 hours
+maxretry = 240
