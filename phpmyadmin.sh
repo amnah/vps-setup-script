@@ -28,6 +28,11 @@ ln -sf /data/phpMyAdmin-*/ /data/phpMyAdmin
 # move config in
 mv config.inc.php /data/phpMyAdmin/
 
+# update permissions
+chown -R www-data.www-data /data/phpMyAdmin-*/
+find /data/phpMyAdmin-*/ -type d -print0 | xargs -0 chmod 0755
+find /data/phpMyAdmin-*/ -type f -print0 | xargs -0 chmod 0644
+
 # echo
 echo -e "------------------------------------------"
 echo -e "phpMyAdmin updated\n"
