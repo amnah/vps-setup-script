@@ -10,6 +10,12 @@ location ~ \.php$ {
     fastcgi_pass unix:/var/run/php5-fpm.sock;
     fastcgi_index index.php;
     include fastcgi_params;
+    
+    # proxy buffer settings
+    # http://stackoverflow.com/questions/13894386/upstream-too-big-nginx-codeigniter
+    fastcgi_buffer_size 128k;
+    fastcgi_buffers 4 256k;
+    fastcgi_busy_buffers_size 256k;
 }
 
 # serve static files directly
