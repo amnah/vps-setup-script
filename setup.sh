@@ -103,8 +103,9 @@ touch /data/logs/phpMyAdmin/error.log
 # empty out mail file
 cat /dev/null > /var/mail/root
 
-# add logrotate to site logs
+# add logrotate to site logs and change rotation to 5MB
 sed -i "s/*.log/*.log \/data\/logs\/*\/*.log/g" /etc/logrotate.d/nginx
+sed -i "s/daily/size=5M/g" /etc/logrotate.d/nginx
 
 # add fail2ban configurations
 # http://snippets.aktagon.com/snippets/554-how-to-secure-an-nginx-server-with-fail2ban
