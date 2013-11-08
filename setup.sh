@@ -19,8 +19,8 @@ pubkey=""
 
 
 
-# fix resolv.conf for some reason
-echo -e "nameserver 8.8.8.8\nnameserver 4.2.2.2" > /etc/resolv.conf 
+# fix resolv.conf if you need to
+#echo -e "nameserver 8.8.8.8\nnameserver 4.2.2.2" > /etc/resolv.conf 
 
 # update and 
 sudo apt-get update 
