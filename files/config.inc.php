@@ -43,6 +43,3 @@ $cfg['DisplayBinaryAsHex'] = false;
 $cfg['ProtectBinary'] = false;
 # Show BLOB data on table browse pages.  Hack to hardcode all requests.
 $_REQUEST['display_blob'] = true;
-
-
-?>

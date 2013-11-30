@@ -55,10 +55,18 @@ sed -i "s/Port 22/Port 5522/g" /etc/ssh/sshd_config
 sudo apt-get -y install fail2ban logwatch
 sed -i "s/--output mail/--output mail --mailto $email --detail high/g" /etc/cron.daily/00logwatch
 
+# restart ssh and fail2ban services
+service ssh restart
+service fail2ban restart
+
+# empty out mail file
+cat /dev/null > /var/mail/root
+
 # git php nginx mysql
 # http://www.howtoforge.com/installing-nginx-with-php5-and-php-fpm-and-mysql-support-lemp-on-ubuntu-12.04-lts
-sudo add-apt-repository -y ppa:git-core/ppa 
+#sudo add-apt-repository -y ppa:git-core/ppa
 sudo apt-get update
+sudo apt-get purge apache2* libapache2*
 sudo apt-get -y install git php5 php5-cli mysql-server mysql-client nginx php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-memcache php-apc php5-curl curl 
 #sudo apt-get -y install php5-suhosin php5-intl php-pear php5-imap php5-ming php5-ps php5-pspell php5-recode php5-snmp php5-sqlite php5-tidy php5-xmlrpc php5-xsl
 #nano /etc/php5/cli/conf.d/ming.ini # change "#" to ";"
@@ -67,16 +75,15 @@ sudo apt-get -y install git php5 php5-cli mysql-server mysql-client nginx php5-f
 sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
 
 # set up nginx
-rm /etc/nginx/sites-enabled/default
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+rm /etc/nginx/sites-enabled/default
 wget https://raw.github.com/amnah/vps-setup-script/master/files/nginx.conf  -O /etc/nginx/nginx.conf
 wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_baseApps -O /etc/nginx/sites-available/_baseApps
 wget https://raw.github.com/amnah/vps-setup-script/master/files/sites-available/_common -O /etc/nginx/sites-available/_common
 
-
 # set up data dir
-mkdir /data && mkdir /data/sites && mkdir /data/logs
+mkdir -p /data/sites /data/logs
 ln -s /etc/nginx/nginx.conf /data/nginx.conf
 ln -s /etc/nginx/sites-available/ /data
 ln -s /etc/nginx/sites-enabled/ /data
@@ -100,9 +107,6 @@ mkdir /data/logs/phpMyAdmin
 touch /data/logs/phpMyAdmin/access.log
 touch /data/logs/phpMyAdmin/error.log
 
-# empty out mail file
-cat /dev/null > /var/mail/root
-
 # add logrotate to site logs and change rotation to 5MB
 sed -i "s/*.log/*.log \/data\/logs\/*\/*.log/g" /etc/logrotate.d/nginx
 sed -i "s/daily/size=5M/g" /etc/logrotate.d/nginx
@@ -115,14 +119,14 @@ wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-l
 wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-noscript.conf -O /etc/fail2ban/filter.d/nginx-noscript.conf
 wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-dos.conf -O /etc/fail2ban/filter.d/nginx-dos.conf
 wget https://raw.github.com/amnah/vps-setup-script/master/files/jail.local.tmp -O /etc/fail2ban/jail.local.tmp
+
+# combine the tmp jail.local.tmp into the preconfigured jail.conf
 cat /etc/fail2ban/jail.conf /etc/fail2ban/jail.local.tmp > /etc/fail2ban/jail.local
 rm /etc/fail2ban/jail.local.tmp
 
-# update services
-service fail2ban restart
+# update apache/nginx services
 service apache2 stop
 update-rc.d -f apache2 remove
-service ssh restart
 service apache2 stop # just in case
 service php5-fpm reload
 service nginx restart

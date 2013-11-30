@@ -32,7 +32,7 @@ location = /robots.txt {
     log_not_found off;
 }
 
-# prevent access to htaccess
+# prevent access to htaccess/htpasswd
 location ~ /\.ht {
     deny all;
 }
