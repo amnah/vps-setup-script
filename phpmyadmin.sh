@@ -4,12 +4,8 @@
 # ------------ config -----------------
 # set url to phpMyAdmin
 # note that you need to use the zip version!
-url="http://sourceforge.net/projects/phpmyadmin/files/phpMyAdmin/4.0.6/phpMyAdmin-4.0.6-all-languages.zip/download"
+url="http://sourceforge.net/projects/phpmyadmin/files/latest/download"
 # ------------ config -----------------
-
-
-
-
 
 # copy old config and delete folder
 cp /data/phpMyAdmin/config.inc.php .
@@ -37,8 +33,8 @@ find /data/phpMyAdmin-*/ -type f -print0 | xargs -0 chmod 0644
 echo -e "------------------------------------------"
 echo -e "phpMyAdmin updated\n"
 echo -e "$url \n"
-echo -e "Remove backup folder if successful\n"
-echo -e "rm -rf /data/bak.phpMyAdmin/"
+echo -e "Remove backup folder and download file if successful\n"
+echo -e "rm -rf /data/bak.phpMyAdmin/ download.bak"
 echo -e "------------------------------------------"
-echo -e "phpMyAdmin.sh finished"
+echo -e "phpmyadmin.sh finished"
 echo -e "------------------------------------------"
