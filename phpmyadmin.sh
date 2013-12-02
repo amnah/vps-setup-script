@@ -19,7 +19,8 @@ rm download
 
 # move folder and set up symbolic link
 mv phpMyAdmin-* /data/
-ln -sf /data/phpMyAdmin-*/ /data/phpMyAdmin
+rm -f /data/phpMyAdmin
+ln -s /data/phpMyAdmin-*/ /data/phpMyAdmin
 
 # move config in
 mv config.inc.php /data/phpMyAdmin/
