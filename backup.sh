@@ -15,28 +15,32 @@ dbPassword="yyy"
 # path to backup directory...
 dbBackup="/data/dumps"
 
+# delete old dumps
+deleteOld=true
+
 # *************************************************************
 
 # get current date ( YYYY-MM-DD )...
-date=$( date +%Y-%m-%d )
-
-# get full dir
-fullDir="$dbBackup/$date"
+date=$( date +%Y%m%d-%H%M%S )
 
 # create backup directory if not exists...
-[ ! -d "$fullDir" ]  && mkdir -p $fullDir
+[ ! -d "$dbBackup" ] && mkdir -p $dbBackup
 
 # delete all old mysqldumps...
-find $fullDir -type f -name '*.sql.gz' -exec rm -rf {} ';' >/dev/null 2>&1
+if $deleteOld ; then
+    find $dbBackup -type f -name '*.sql.gz' -exec rm -rf {} ';' >/dev/null 2>&1
+fi
 
 # loop all databases...
 for db in $( mysql -u $dbUsername --password=$dbPassword -Bse "show databases" ); do
+
     if [[ "$db" != "mysql" ]] && [[ "$db" != "test" ]] && [[ "$db" != "performance_schema" ]] && [[ "$db" != "information_schema" ]] && [[ "$db" != _* ]] ; then
         # get mysqldump of current database...
-        echo "Dumping $db into $fullDir ..."
-        mysqldump -u $dbUsername --password=$dbPassword --opt --databases $db | gzip -9 >${fullDir}/${db}.sql.gz
+        fullPath="$dbBackup/$db-$date.sql.gz"
+        echo "Dumping $db into $fullPath ..."
+        mysqldump -u $dbUsername --password=$dbPassword --opt --databases $db | gzip -9 >${fullPath}
     fi
+
 done
 
-# tar everything
 tar -czhpf data.tar.gz /data --exclude "vendor" --exclude "/data/phpMyAdmin*"
