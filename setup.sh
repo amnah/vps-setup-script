@@ -145,10 +145,11 @@ if $doWebServer ; then
     find /data/sites -type d -print0 | xargs -0 chmod 0755
     #find /data/sites -type f -print0 | xargs -0 chmod 0644 # NOPE dont need this
 
-    # clean up and download site.sh
+    # clean up and download site.sh and backup.sh
     chmod 400 setup.sh
     wget https://raw.github.com/amnah/vps-setup-script/master/site.sh
-    chmod 700 site.sh
+    wget https://raw.github.com/amnah/vps-setup-script/master/backup.sh
+    chmod 700 site.sh backup.sh
 
     # display message about site.sh
     echo -e "------------------------------------------"
