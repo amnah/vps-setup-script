@@ -22,7 +22,7 @@ enabled  = true
 filter = apache-badbots
 action = iptables-multiport[name=BadBots, port="http,https"]
 logpath = /data/logs/*/*access*.log
-bantime = 259200 # 1 day (changed to 3 days)
+bantime = 86400 # 1 day
 maxretry = 1
  
 [nginx-noscript]
@@ -39,7 +39,7 @@ action = iptables-multiport[name=NoProxy, port="http,https"]
 filter = proxy
 logpath = /data/logs/*/*access*.log
 maxretry = 0
-bantime = 259200 # 1 day (changed to 3 days)
+bantime = 86400 # 1 day
 
 
 # http://serverfault.com/questions/420895/how-to-use-fail2ban-for-nginx
@@ -53,5 +53,5 @@ port    = http,https
 filter  = nginx-dos
 logpath = /data/logs/*/*access*.log
 findtime = 60
-bantime  = 172800 # 2 days (3600 for 4 hours)
-maxretry = 240
+maxretry = 480 # 8 pages/second
+bantime  = 86400 # 1 day
