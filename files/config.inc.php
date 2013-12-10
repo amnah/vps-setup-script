@@ -10,12 +10,12 @@ $i = 0;
 
 $i++;
 $cfg['Servers'][$i]['auth_type'] = 'cookie';
-$cfg['Servers'][$i]['host'] = '127.0.0.1';
+$cfg['Servers'][$i]['host'] = 'localhost';
 $cfg['Servers'][$i]['connect_type'] = 'tcp';
 $cfg['Servers'][$i]['compress'] = false;
 $cfg['Servers'][$i]['extension'] = 'mysqli';
 $cfg['Servers'][$i]['AllowNoPassword'] = false;
-$cfg['Servers'][$i]['user'] = 'root';
+$cfg['Servers'][$i]['user'] = '';
 $cfg['Servers'][$i]['password'] = '';
 
  
@@ -35,7 +35,7 @@ $cfg['ShowAll'] = true;
 $cfg['LoginCookieValidity'] = 60 * 60 * 24*7;
 ini_set('session.gc_maxlifetime', $cfg['LoginCookieValidity']);
 
-# Show 1000 rows instead of 30 by default
+# Show 150 rows instead of 30 by default
 $cfg['MaxRows'] = 150;
 # Show BLOB data as a string not hex.
 $cfg['DisplayBinaryAsHex'] = false;

@@ -1,8 +1,10 @@
 
 # scp .bashrc rootq@10.2.0.3:.bashrc
-# rsync -av ec2:~/se/bitstarter /d/node
 # source "${HOME}/.bash_aliases"
+# scp .bashrc rootq@10.2.0.3:.bashrc
+# rsync -av ec2:~/se/bitstarter /d/node
 # tar -czhpf data.tar.gz /data --exclude "/data/sites/xxx" --exclude "vendor" --exclude "/data/phpMyAdmin*"
+# find / -name "*.sock"
 
 # ---------------------------------------
 # bash options
