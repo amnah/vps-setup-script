@@ -1,10 +1,10 @@
 
 # scp .bashrc rootq@10.2.0.3:.bashrc
 # source "${HOME}/.bash_aliases"
-# scp .bashrc rootq@10.2.0.3:.bashrc
 # rsync -av ec2:~/se/bitstarter /d/node
 # tar -czhpf data.tar.gz /data --exclude "/data/sites/xxx" --exclude "vendor" --exclude "/data/phpMyAdmin*"
 # find / -name "*.sock"
+# find . -type f -print0 | xargs -0 chmod 0644; find . -type d -print0 | xargs -0 chmod 0755
 
 # ---------------------------------------
 # bash options
@@ -26,3 +26,13 @@ alias bashrc='head .bashrc -n 25'
 # path
 # ---------------------------------------
 #PATH=/cygdrive/c/xampp/mysql/bin/:$PATH
+
+# ---------------------------------------
+# increase .bash_history limit
+# http://mywiki.wooledge.org/BashFAQ/088
+# ---------------------------------------
+HISTFILESIZE=400000000
+HISTSIZE=10000
+PROMPT_COMMAND="history -a"
+export HISTSIZE PROMPT_COMMAND
+shopt -s histappend
