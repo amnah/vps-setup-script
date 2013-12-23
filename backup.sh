@@ -7,13 +7,13 @@
 # *************************************************************
 
 # name of database user ( must have LOCK_TABLES rights )...
-dbUsername="xxx"
+dbUsername='xxx'
 
 # password of database user...
-dbPassword="yyy"
+dbPassword='yyy'
 
 # path to backup directory...
-dbBackup="/data/dumps"
+dbBackup='/data/dumps'
 
 # delete old dumps
 deleteOld=true
