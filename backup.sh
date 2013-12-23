@@ -43,4 +43,4 @@ for db in $( mysql -u $dbUsername --password=$dbPassword -Bse "show databases" )
 
 done
 
-tar -czhpf data.tar.gz /data --exclude "vendor" --exclude "/data/phpMyAdmin*"
+tar -czhpf /root/data.tar.gz /data --exclude "vendor" --exclude "/data/phpMyAdmin*"
