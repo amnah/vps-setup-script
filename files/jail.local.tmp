@@ -41,17 +41,4 @@ logpath = /data/logs/*/*access*.log
 maxretry = 0
 bantime = 86400 # 1 day
 
-
 # http://serverfault.com/questions/420895/how-to-use-fail2ban-for-nginx
-# Based on apache-badbots but a simple IP check (any IP requesting more than
-# 240 pages in 60 seconds, or 4p/s average, is suspicious)
-# Block for two full days.
-# @author Yannick Warnier
-[nginx-dos]
-enabled = true
-port    = http,https
-filter  = nginx-dos
-logpath = /data/logs/*/*access*.log
-findtime = 60
-maxretry = 480 # 8 pages/second
-bantime  = 86400 # 1 day
