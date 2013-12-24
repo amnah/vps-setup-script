@@ -15,6 +15,8 @@ alias ls='ls $LS_OPTIONS -hA'
 alias ll='ls $LS_OPTIONS -lhA'
 alias rm='rm -i'
 alias bashrc='head .bashrc -n 25'
+alias bashh="nano ~/.bash_history"
+alias bashe="nano ~/.eternal_history"
 
 # ---------------------------------------
 # aliases
@@ -23,7 +25,7 @@ alias bashrc='head .bashrc -n 25'
 #alias vnckill="vncserver -kill :1"
 
 # ---------------------------------------
-# path
+# paths
 # ---------------------------------------
 #PATH=/cygdrive/c/xampp/mysql/bin/:$PATH
 
@@ -31,8 +33,16 @@ alias bashrc='head .bashrc -n 25'
 # increase .bash_history limit
 # http://mywiki.wooledge.org/BashFAQ/088
 # ---------------------------------------
-HISTFILESIZE=400000000
-HISTSIZE=10000
-PROMPT_COMMAND="history -a"
-export HISTSIZE PROMPT_COMMAND
-shopt -s histappend
+#HISTFILESIZE=400000000
+#HISTSIZE=10000
+#PROMPT_COMMAND="history -a"
+#export HISTSIZE PROMPT_COMMAND
+#shopt -s histappend
+
+# ---------------------------------------
+# https://github.com/startup-class/dotfiles/blob/master/.bashrc
+# modified by removing most stuff
+# ---------------------------------------
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ; }"'echo -e `date "+%Y/%m/%d %T"`\\t$PWD\\t"$(history 1)" >> ~/.eternal_history'
+shopt -s checkwinsize
+
