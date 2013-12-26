@@ -36,7 +36,7 @@ service nginx reload
 # echo
 echo -e "------------------------------------------"
 echo -e "You are now LIVE!\n"
-echo -e "$site"
+echo -e "   $site"
 echo -e "------------------------------------------"
 echo -e "site.sh finished"
 echo -e "------------------------------------------"
