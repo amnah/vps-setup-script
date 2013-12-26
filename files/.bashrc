@@ -43,6 +43,7 @@ alias bashe="nano ~/.eternal_history"
 # https://github.com/startup-class/dotfiles/blob/master/.bashrc
 # modified by removing most stuff
 # ---------------------------------------
-PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ; }"'echo -e `date "+%Y/%m/%d %T"`\\t$PWD\\t"$(history 1)" >> ~/.eternal_history'
+PROMPT_COMMAND="history -a;${PROMPT_COMMAND:+$PROMPT_COMMAND ; }"'echo -e `date "+%Y/%m/%d %T"`\\t$PWD\\t"$(history 1)" >> ~/.eternal_history'
 shopt -s checkwinsize
+shopt -s histappend
 
