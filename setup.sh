@@ -161,7 +161,7 @@ fi
 
 if $doVnc ; then
     # install tightvnc and xfce
-    sudo apt-get -y install ubuntu-desktop tightvncserver xfce4 xfce4-goodies
+    sudo apt-get -y install tightvncserver xfce4 xfce4-goodies
 
     # update scripts
     mkdir ~/.vnc
