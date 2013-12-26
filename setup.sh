@@ -161,12 +161,17 @@ if $doWebServer ; then
 fi
 
 if $doVnc ; then
+    # install tightvnc and xfce
     sudo apt-get -y install ubuntu-desktop tightvncserver xfce4 xfce4-goodies
+
+    # update scripts
     wget https://raw.github.com/amnah/vps-setup-script/master/files/xstartup  -O ~/.vnc/xstartup
-    #echo $vncPassword | vncpasswd -f > ~/.vnc/passwd
+    sed -i "s/#alias vnc/alias vnc/g" ~/.bashrc
+    #echo "password" | vncpasswd -f > ~/.vnc/passwd
 fi
 
 # display finished message
 echo -e "------------------------------------------"
 echo -e "setup.sh finished"
+echo -e "   echo 'password' | vncpasswd -f > ~/.vnc/passwd"
 echo -e "------------------------------------------"
