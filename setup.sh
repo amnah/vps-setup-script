@@ -165,6 +165,7 @@ if $doVnc ; then
     sudo apt-get -y install ubuntu-desktop tightvncserver xfce4 xfce4-goodies
 
     # update scripts
+    mkdir ~/.vnc
     wget https://raw.github.com/amnah/vps-setup-script/master/files/xstartup  -O ~/.vnc/xstartup
     sed -i "s/#alias vnc/alias vnc/g" ~/.bashrc
     #echo "password" | vncpasswd -f > ~/.vnc/passwd
