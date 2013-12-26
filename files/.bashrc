@@ -21,7 +21,7 @@ alias bashe="nano ~/.eternal_history"
 # ---------------------------------------
 # aliases
 # ---------------------------------------
-#alias vnc="vncserver :1 -geometry 1600x900 -depth 16"
+#alias vnc="vncserver :1 -geometry 1600x900 -localhost"
 #alias vnckill="vncserver -kill :1"
 
 # ---------------------------------------

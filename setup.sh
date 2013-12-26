@@ -14,6 +14,7 @@ sshPort="5522"
 # setup
 doSetup=true
 doWebServer=true
+doVnc=false
 
 
 # mysql root password
@@ -26,7 +27,6 @@ doWebServer=true
 
 
 if $doSetup ; then
-
     # fix resolv.conf if you need to
     #echo -e "nameserver 8.8.8.8\nnameserver 4.2.2.2" > /etc/resolv.conf 
 
@@ -119,11 +119,11 @@ if $doWebServer ; then
     touch /data/logs/phpMyAdmin/access.log
     touch /data/logs/phpMyAdmin/error.log
 
-    # add logrotate to site logs and change rotation to 5MB
+    # add logrotate to site logs and change rotation settings
     sed -i "s/*.log/*.log \/data\/logs\/*\/*.log/g" /etc/logrotate.d/nginx
-    #sed -i "s/daily/size=5M/g" /etc/logrotate.d/nginx
-    #sed -i "s/daily/size=5M/g" /etc/logrotate.d/mysql-server
-    #sed -i "s/rotate 7/rotate 52/g" /etc/logrotate.d/mysql-server
+    sed -i "s/daily/size=50M/g" /etc/logrotate.d/nginx
+    sed -i "s/daily/size=50M/g" /etc/logrotate.d/mysql-server
+    sed -i "s/rotate 7/rotate 52/g" /etc/logrotate.d/mysql-server
 
     # add fail2ban configurations
     # http://snippets.aktagon.com/snippets/554-how-to-secure-an-nginx-server-with-fail2ban
@@ -158,6 +158,12 @@ if $doWebServer ; then
     echo -e "Now go! Modify and run:\n"
     echo -e "./site.sh"
 
+fi
+
+if $doVnc ; then
+    sudo apt-get -y install ubuntu-desktop tightvncserver xfce4 xfce4-goodies
+    wget https://raw.github.com/amnah/vps-setup-script/master/files/xstartup  -O ~/.vnc/xstartup
+    #echo $vncPassword | vncpasswd -f > ~/.vnc/passwd
 fi
 
 # display finished message
