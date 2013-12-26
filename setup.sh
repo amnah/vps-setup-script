@@ -148,7 +148,6 @@ if $doWebServer ; then
     #find /data/sites -type f -print0 | xargs -0 chmod 0644 # NOPE dont need this
 
     # clean up and download site.sh and backup.sh
-    chmod 400 setup.sh
     wget https://raw.github.com/amnah/vps-setup-script/master/site.sh
     wget https://raw.github.com/amnah/vps-setup-script/master/backup.sh
     chmod 700 site.sh backup.sh
@@ -170,6 +169,9 @@ if $doVnc ; then
     sed -i "s/#alias vnc/alias vnc/g" ~/.bashrc
     #echo "password" | vncpasswd -f > ~/.vnc/passwd
 fi
+
+# chmod script so it can't run again
+chmod 400 setup.sh
 
 # display finished message
 echo -e "------------------------------------------"
