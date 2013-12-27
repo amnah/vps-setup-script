@@ -155,7 +155,7 @@ if $doWebServer ; then
     # display message about site.sh
     echo -e "------------------------------------------"
     echo -e "Now go! Modify and run:\n"
-    echo -e "./site.sh"
+    echo -e "   ./site.sh"
 
 fi
 
@@ -167,7 +167,11 @@ if $doVnc ; then
     mkdir ~/.vnc
     wget https://raw.github.com/amnah/vps-setup-script/master/files/xstartup  -O ~/.vnc/xstartup
     sed -i "s/#alias vnc/alias vnc/g" ~/.bashrc
-    #echo "password" | vncpasswd -f > ~/.vnc/passwd
+    
+    # display message about vnc
+    echo -e "------------------------------------------"
+    echo -e "Set up a vnc password:\n"
+    echo -e "   echo 'password' | vncpasswd -f > ~/.vnc/passwd"
 fi
 
 # chmod script so it can't run again
@@ -176,5 +180,4 @@ chmod 400 setup.sh
 # display finished message
 echo -e "------------------------------------------"
 echo -e "setup.sh finished"
-echo -e "   echo 'password' | vncpasswd -f > ~/.vnc/passwd"
 echo -e "------------------------------------------"
