@@ -14,9 +14,10 @@ PS1="\[\e]0;\w\a\]\n\[\e[32m\][\u@\h] [\d \t] [\!] \[\e[33m\]\w\[\e[0m\]\\n$ "
 alias ls='ls $LS_OPTIONS -hA'
 alias ll='ls $LS_OPTIONS -lhA'
 alias rm='rm -i'
-alias bashrc='head .bashrc -n 25'
+alias bashrc='head ~/.bashrc -n 25'
 alias bashh="nano ~/.bash_history"
 alias bashe="nano ~/.eternal_history"
+alias nano="nano --tabstospaces --tabsize=4 --const --nonewlines --autoindent"
 
 # ---------------------------------------
 # aliases
