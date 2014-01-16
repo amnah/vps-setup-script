@@ -34,8 +34,8 @@ alias nano="nano --tabstospaces --tabsize=4 --const --nonewlines --autoindent"
 # increase .bash_history limit
 # http://mywiki.wooledge.org/BashFAQ/088
 # ---------------------------------------
-#HISTFILESIZE=400000000
-#HISTSIZE=10000
+HISTSIZE=5000
+HISTFILESIZE=10000
 #PROMPT_COMMAND="history -a"
 #export HISTSIZE PROMPT_COMMAND
 #shopt -s histappend
