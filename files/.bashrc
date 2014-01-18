@@ -5,6 +5,7 @@
 # tar -czhpf data.tar.gz /data --exclude "/data/sites/xxx" --exclude "vendor" --exclude "/data/phpMyAdmin*"
 # find / -name "*.sock"
 # find . -type f -print0 | xargs -0 chmod 0644; find . -type d -print0 | xargs -0 chmod 0755
+# chown -R www-data.www-data .
 
 # ---------------------------------------
 # bash options
