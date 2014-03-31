@@ -64,19 +64,6 @@ if $doSetup ; then
     sudo apt-get -y install fail2ban logwatch
     sed -i "s/--output mail/--output mail --mailto $email --detail high/g" /etc/cron.daily/00logwatch
 
-    # add fail2ban configurations
-    # http://snippets.aktagon.com/snippets/554-how-to-secure-an-nginx-server-with-fail2ban
-    wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/proxy.conf -O /etc/fail2ban/filter.d/proxy.conf
-    wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-auth.conf -O /etc/fail2ban/filter.d/nginx-auth.conf
-    wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-login.conf -O /etc/fail2ban/filter.d/nginx-login.conf
-    wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-noscript.conf -O /etc/fail2ban/filter.d/nginx-noscript.conf
-    wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-dos.conf -O /etc/fail2ban/filter.d/nginx-dos.conf
-    wget https://raw.github.com/amnah/vps-setup-script/master/files/jail.local.tmp -O /etc/fail2ban/jail.local.tmp
-
-    # combine the tmp jail.local.tmp into the preconfigured jail.conf
-    cat /etc/fail2ban/jail.conf /etc/fail2ban/jail.local.tmp > /etc/fail2ban/jail.local
-    rm /etc/fail2ban/jail.local.tmp
-
     # restart ssh and fail2ban services
     service ssh restart
     service fail2ban restart
@@ -136,6 +123,19 @@ if $doWebServer ; then
     sed -i "s/daily/size=50M/g" /etc/logrotate.d/nginx
     sed -i "s/daily/size=50M/g" /etc/logrotate.d/mysql-server
     sed -i "s/rotate 7/rotate 52/g" /etc/logrotate.d/mysql-server
+
+    # add nginx configurations for fail2ban
+    # http://snippets.aktagon.com/snippets/554-how-to-secure-an-nginx-server-with-fail2ban
+    wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/proxy.conf -O /etc/fail2ban/filter.d/proxy.conf
+    wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-auth.conf -O /etc/fail2ban/filter.d/nginx-auth.conf
+    wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-login.conf -O /etc/fail2ban/filter.d/nginx-login.conf
+    wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-noscript.conf -O /etc/fail2ban/filter.d/nginx-noscript.conf
+    wget https://raw.github.com/amnah/vps-setup-script/master/files/filter.d/nginx-dos.conf -O /etc/fail2ban/filter.d/nginx-dos.conf
+    wget https://raw.github.com/amnah/vps-setup-script/master/files/jail.local.tmp -O /etc/fail2ban/jail.local.tmp
+
+    # combine the tmp jail.local.tmp into the preconfigured jail.conf
+    cat /etc/fail2ban/jail.conf /etc/fail2ban/jail.local.tmp > /etc/fail2ban/jail.local
+    rm /etc/fail2ban/jail.local.tmp
 
     # restart nginx services
     service php5-fpm restart
