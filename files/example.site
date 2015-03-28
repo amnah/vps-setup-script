@@ -3,11 +3,11 @@
 # -----------------------------------------------------
 # invalid subdomains - redirect to main site
 # -----------------------------------------------------
-#server {
-#    include /etc/nginx/sites-available/_common;
-#    server_name "~^(?<subdomain>\w+)\.example\.site$";  # note the escaped period - example\.site
-#    return 301 $scheme://example.site$request_uri;
-#}
+server {
+    include /etc/nginx/sites-available/_common;
+    server_name "~^(?<subdomain>\w+)\.example\.site$";  # note the escaped period - example\.site
+    return 301 $scheme://example.site$request_uri;
+}
 
 # -----------------------------------------------------
 # www -> redirect to main site
@@ -22,11 +22,16 @@ server {
 # main site
 # -----------------------------------------------------
 server {
+    
     server_name example.site;
     root /data/sites/example.site;
     access_log /data/logs/example.site/access.log;
     error_log /data/logs/example.site/error.log;
-    include /etc/nginx/sites-available/_common;
+    
+    listen 80;
+    #listen 443 default_server ssl;
+    #ssl_certificate     /etc/nginx/ssl/example.site_combined.crt;
+    #ssl_certificate_key /etc/nginx/ssl/example.site.key;
     
     location / {
         # default
@@ -39,5 +44,51 @@ server {
         # wordpress
         # http://wiki.nginx.org/WordPress
         #try_files $uri $uri/ /index.php?$args;
+        
+        # nodejs
+        #proxy_pass http://localhost:3005;
+        #proxy_http_version 1.1;
+        #proxy_set_header Upgrade $http_upgrade;
+        #proxy_set_header Connection 'upgrade';
+        #proxy_set_header Host $host;
+        #proxy_cache_bypass $http_upgrade;
+    }
+    
+    # process php files
+    location ~ \.php$ {
+        
+        # params
+        fastcgi_param MY_ENV dev;
+        
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        
+        # proxy buffer settings
+        # http://stackoverflow.com/questions/13894386/upstream-too-big-nginx-codeigniter
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 4 256k;
+        fastcgi_busy_buffers_size 256k;
+    }
+
+    # serve static files directly
+    location ~* \.(jpg|jpeg|gif|css|png|js|ico|html)$ {
+        access_log off;
+        log_not_found off;
+        expires max;
+    }
+
+    # robots.txt
+    location = /robots.txt {
+        allow all;
+        access_log off;
+        log_not_found off;
+    }
+
+    # prevent access to htaccess/htpasswd
+    location ~ /\.ht {
+        deny all;
     }
 }

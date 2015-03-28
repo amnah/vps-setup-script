@@ -20,7 +20,8 @@ echo "hello" > /data/sites/$site/index.php
 
 # copy server block
 cp /data/example.site /etc/nginx/sites-available/$site
-sed -i "s/example.site/$site/g" /etc/nginx/sites-available/$site
+sed -i 's/example.site/$site/g' /etc/nginx/sites-available/$site
+sed -i 's/example\\.site/$site/g' /etc/nginx/sites-available/$site
 ln -s /etc/nginx/sites-available/$site /etc/nginx/sites-enabled/
 
 # change owner and permissions
