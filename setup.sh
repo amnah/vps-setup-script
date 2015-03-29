@@ -29,7 +29,7 @@ if $doSetup ; then
     # fix resolv.conf if you need to
     #echo -e "nameserver 8.8.8.8\nnameserver 4.2.2.2" > /etc/resolv.conf
 
-    # update and
+    # update and upgrade
     apt-get update && apt-get -y upgrade
 
     # nano + other apps for add-apt-repository cmd
@@ -49,7 +49,6 @@ if $doSetup ; then
 
     # prevent root login with password (ssh keys only)
     mkdir ~/.ssh
-    touch ~/.ssh/authorized_keys
     echo "$pubkey" > ~/.ssh/authorized_keys
     chmod 700 ~/.ssh
     chmod 600 ~/.ssh/authorized_keys
@@ -72,10 +71,14 @@ fi
 if $doWebServer ; then
     # git php nginx mysql
     # http://www.howtoforge.com/installing-nginx-with-php5-and-php-fpm-and-mysql-support-lemp-on-ubuntu-12.04-lts
+    export LANG=C.UTF-8
     add-apt-repository -y ppa:git-core/ppa
+    add-apt-repository -y ppa:ondrej/php5-5.6
+    apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
+    add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
     apt-get update
     apt-get -y purge apache2* libapache2*
-    apt-get -y install git php5 php5-cli mysql-server mysql-client nginx php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-memcache php-apc php5-curl curl
+    apt-get -y install git php5 php5-cli mariadb-server nginx php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-redis php5-memcache php-apc php5-curl curl
     #nano /etc/php5/cli/conf.d/ming.ini # change "#" to ";"
 
     # fix up some configs
