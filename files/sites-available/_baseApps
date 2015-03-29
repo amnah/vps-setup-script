@@ -18,16 +18,50 @@ server {
     error_log /data/logs/phpMyAdmin/error.log;
     include /etc/nginx/sites-available/_common;
     
+    listen 80;
+    #listen 443 default_server ssl;
+    #ssl_certificate     /etc/nginx/ssl/example.site_combined.crt;
+    #ssl_certificate_key /etc/nginx/ssl/example.site.key;
+    
     location / {
-        # default
         try_files $uri $uri/ /index.php;
+    }
+    
+    # process php files
+    location ~ \.php$ {
         
-        # laravel, joomla, drupal, etc
-        # http://wiki.nginx.org/Pitfalls (Front Controller Pattern based packages)
-        #try_files $uri $uri/ /index.php?q=$uri&$args;
+        # params
+        fastcgi_param MY_ENV dev;
         
-        # wordpress
-        # http://wiki.nginx.org/WordPress
-        #try_files $uri $uri/ /index.php?$args;
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        
+        # proxy buffer settings
+        # http://stackoverflow.com/questions/13894386/upstream-too-big-nginx-codeigniter
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 4 256k;
+        fastcgi_busy_buffers_size 256k;
+    }
+
+    # serve static files directly
+    location ~* \.(jpg|jpeg|gif|css|png|js|ico|html)$ {
+        access_log off;
+        log_not_found off;
+        expires max;
+    }
+
+    # robots.txt
+    location = /robots.txt {
+        allow all;
+        access_log off;
+        log_not_found off;
+    }
+
+    # prevent access to htaccess/htpasswd
+    location ~ /\.ht {
+        deny all;
     }
 }
