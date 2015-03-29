@@ -78,8 +78,7 @@ if $doWebServer ; then
     add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
     apt-get update
     apt-get -y purge apache2* libapache2*
-    apt-get -y install git php5 php5-cli mariadb-server nginx php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-redis php5-memcache php-apc php5-curl curl
-    #nano /etc/php5/cli/conf.d/ming.ini # change "#" to ";"
+    apt-get -y install git mariadb-server mariadb-client redis-server nginx php5 php5-cli php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-redis php-apc php5-curl curl
 
     # fix up some configs
     sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
