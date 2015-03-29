@@ -16,7 +16,7 @@ dbPassword='yyy'
 dbBackup='/data/dumps'
 
 # delete old dumps
-deleteOld=true
+deleteOld=false
 
 # *************************************************************
 
@@ -38,9 +38,12 @@ for db in $( mysql -u $dbUsername --password=$dbPassword -Bse "show databases" )
         # get mysqldump of current database...
         fullPath="$dbBackup/$db-$date.sql.gz"
         echo "Dumping $db into $fullPath ..."
-        mysqldump -u $dbUsername --password=$dbPassword --opt --databases $db | gzip -9 >${fullPath}
+        mysqldump -u $dbUsername --password=$dbPassword --opt --databases $db | gzip -9 > $fullPath
     fi
 
 done
 
-tar -czhpf /root/data.tar.gz /data --exclude "vendor" --exclude "/data/phpMyAdmin*"
+# backup data sites
+backupPath="/root/data/$date.tar.gz"
+tar -czhpf $backupPath /data --exclude "vendor" --exclude "node_modules" --exclude "/data/phpMyAdmin*" \
+    --exclude "web/assets/*"
