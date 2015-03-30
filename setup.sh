@@ -97,7 +97,7 @@ if $doWebServer ; then
     ln -s /etc/nginx/sites-enabled/ /data
     ln -s /etc/nginx/sites-available/_baseApps /etc/nginx/sites-enabled/_baseApps
     wget ${downloadPath}files/example.site -O /data/example.site
-    
+
     # download and install/move phpMyAdmin
     # note: file gets named "download"
     wget http://sourceforge.net/projects/phpmyadmin/files/latest/download
@@ -108,10 +108,12 @@ if $doWebServer ; then
     wget ${downloadPath}files/config.inc.php -O /data/phpMyAdmin/config.inc.php
 
     # setup default + phpMyAdmin logs in nginx
-    mkdir /data/logs/_ 
+    mkdir /data/logs/_
     mkdir /data/logs/phpMyAdmin
-    touch /data/logs/_/access.log /data/logs/_/error.log
-    touch /data/logs/phpMyAdmin/access.log /data/logs/phpMyAdmin/error.log
+    touch /data/logs/_/access.log
+    touch /data/logs/_/error.log
+    touch /data/logs/phpMyAdmin/access.log
+    touch /data/logs/phpMyAdmin/error.log
 
     # add logrotate to site logs and change rotation settings
     sed -i "s/*.log/*.log \/data\/logs\/*\/*.log/g" /etc/logrotate.d/nginx
@@ -139,7 +141,7 @@ if $doWebServer ; then
     # change owner and permissions
     chown -R www-data.www-data /data/sites
     find /data/sites -type d -print0 | xargs -0 chmod 0755
-    #find /data/sites -type f -print0 | xargs -0 chmod 0644 # NOPE dont need this
+    find /data/sites -type f -print0 | xargs -0 chmod 0644
 
     # clean up and download site.sh and backup.sh
     wget ${downloadPath}site.sh
