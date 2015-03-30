@@ -87,9 +87,8 @@ if $doWebServer ; then
     mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
     mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
     rm /etc/nginx/sites-enabled/default
-    wget ${downloadPath}files/nginx.conf  -O /etc/nginx/nginx.conf
+    wget ${downloadPath}files/nginx.conf -O /etc/nginx/nginx.conf
     wget ${downloadPath}files/sites-available/_baseApps -O /etc/nginx/sites-available/_baseApps
-    wget ${downloadPath}files/sites-available/_common -O /etc/nginx/sites-available/_common
 
     # set up data dir
     mkdir -p /data/sites /data/logs
@@ -98,7 +97,7 @@ if $doWebServer ; then
     ln -s /etc/nginx/sites-enabled/ /data
     ln -s /etc/nginx/sites-available/_baseApps /etc/nginx/sites-enabled/_baseApps
     wget ${downloadPath}files/example.site -O /data/example.site
-
+    
     # download and install/move phpMyAdmin
     # note: file gets named "download"
     wget http://sourceforge.net/projects/phpmyadmin/files/latest/download
