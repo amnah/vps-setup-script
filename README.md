@@ -1,4 +1,6 @@
 vps-setup-script
 ================
 
-VPS setup script - Ubuntu, PHP, MySQL, Nginx, Git
+VPS setup script - LEMP stack
+
+Ubuntu (14.04), PHP, MariaDb, Nginx, Git
