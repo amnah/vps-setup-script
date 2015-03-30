@@ -3,11 +3,9 @@
 
 # ------------ config -----------------
 # set up site name
-site=""
+site="" # "mydomain.com"
 
-# ------------ config -----------------
-
-
+# ------------ end config -----------------
 
 
 
@@ -16,12 +14,12 @@ mkdir /data/sites/$site
 mkdir /data/logs/$site
 touch /data/logs/$site/access.log
 touch /data/logs/$site/error.log
-echo "hello" > /data/sites/$site/index.php
+echo "hello world" > /data/sites/$site/index.php
 
 # copy server block
 cp /data/example.site /etc/nginx/sites-available/$site
-sed -i 's/example.site/$site/g' /etc/nginx/sites-available/$site
-sed -i 's/example\\.site/$site/g' /etc/nginx/sites-available/$site
+sed -i "s/example.site/${site}/g" /etc/nginx/sites-available/$site
+sed -i "s/example\\\.site/${site/./\\\\\.}/g" /etc/nginx/sites-available/$site # wooo that's a lot of backslashes
 ln -s /etc/nginx/sites-available/$site /etc/nginx/sites-enabled/
 
 # change owner and permissions
