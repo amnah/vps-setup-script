@@ -4,7 +4,7 @@
 # -----------------------------------------------------
 server {
     listen 80 default_server;
-    server_name _;    
+    server_name _;
     return 444;
 }
 
@@ -16,34 +16,27 @@ server {
     root /data/phpMyAdmin;
     access_log /data/logs/phpMyAdmin/access.log;
     error_log /data/logs/phpMyAdmin/error.log;
-    include /etc/nginx/sites-available/_common;
-    
+
     listen 80;
     #listen 443 default_server ssl;
     #ssl_certificate     /etc/nginx/ssl/example.site_combined.crt;
     #ssl_certificate_key /etc/nginx/ssl/example.site.key;
-    
+
     location / {
         try_files $uri $uri/ /index.php;
     }
-    
+
     # process php files
     location ~ \.php$ {
-        
+
         # params
         fastcgi_param MY_ENV dev;
-        
+
         try_files $uri =404;
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
         fastcgi_pass unix:/var/run/php5-fpm.sock;
         fastcgi_index index.php;
         include fastcgi_params;
-        
-        # proxy buffer settings
-        # http://stackoverflow.com/questions/13894386/upstream-too-big-nginx-codeigniter
-        fastcgi_buffer_size 128k;
-        fastcgi_buffers 4 256k;
-        fastcgi_busy_buffers_size 256k;
     }
 
     # serve static files directly
