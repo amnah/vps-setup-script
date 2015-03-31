@@ -5,11 +5,17 @@
 # set up email for logwatch
 email=""
 
+# user
+username=""
+password=""
+
 # public key for putting into .ssh/authorized_keys
 pubkey=""
 
 # ssh port
-sshPort="5522"
+sshPort="22"
+
+
 
 # setup
 doSetup=true
@@ -30,7 +36,8 @@ if $doSetup ; then
     #echo -e "nameserver 8.8.8.8\nnameserver 4.2.2.2" > /etc/resolv.conf
 
     # update and upgrade
-    apt-get update && apt-get -y upgrade
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 
     # nano + other apps for add-apt-repository cmd
     # http://stackoverflow.com/a/16032073
@@ -42,26 +49,32 @@ if $doSetup ; then
     apt-get -y install ntp
     service ntp restart
 
-    # bashrc
+    # set up .bashrc for root (for sudo -i)
     mv ~/.bashrc ~/.bashrc.bak
     wget ${downloadPath}files/.bashrc -O ~/.bashrc
     chmod 644 ~/.bashrc
 
-    # prevent root login with password (ssh keys only)
-    mkdir ~/.ssh
-    echo "$pubkey" > ~/.ssh/authorized_keys
-    chmod 700 ~/.ssh
-    chmod 600 ~/.ssh/authorized_keys
-    chown -R root.root .ssh
-    echo -e "\n\nPermitRootLogin no\nPasswordAuthentication no\n#AllowUsers username@(your-ip) username@(another-ip-if-any)" >> /etc/ssh/sshd_config
+    # prevent root login
     sed -i "s/Port 22/Port $sshPort/g" /etc/ssh/sshd_config
+    sed -i "s/PermitRootLogin yes/#PermitRootLogin yes/g" /etc/ssh/sshd_config
+    echo -e "\n\nPermitRootLogin no\nPasswordAuthentication no\n#AllowUsers username@(your-ip) username@(another-ip-if-any)" >> /etc/ssh/sshd_config
+
+    # create user and set up .bashrc + ssh
+    adduser --disabled-password --gecos "" $username
+    echo $username:$password | /usr/sbin/chpasswd
+    adduser $username sudo
+    mv /home/$username/.bashrc /home/$username/.bashrc.bak
+    cp ~/.bashrc /home/$username/.bashrc
+    mkdir /home/$username/.ssh
+    echo "$pubkey" > /home/$username/.ssh/authorized_keys
+    chmod 700 /home/$username/.ssh
+    chmod 600 /home/$username/.ssh/authorized_keys
+    chown -R $username.$username /home/$username
+    service ssh restart
 
     # fail2ban and logwatch
     apt-get -y install fail2ban logwatch
     sed -i "s/--output mail/--output mail --mailto $email --detail high/g" /etc/cron.daily/00logwatch
-
-    # restart ssh and fail2ban services
-    service ssh restart
     service fail2ban restart
 
     # empty out mail file
