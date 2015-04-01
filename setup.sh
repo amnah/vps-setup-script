@@ -10,7 +10,10 @@ username=""
 password=""
 
 # public key for putting into .ssh/authorized_keys
-pubkey=""
+pubkey="" # "ssh-rsa AAAAB3NzaC1................"
+
+# mariadb root password
+mariadbPassword="z" # change this to something more secure
 
 # ssh port
 sshPort="22"
@@ -23,9 +26,6 @@ doWebServer=true
 doVnc=false
 
 downloadPath="https://raw.github.com/amnah/vps-setup-script/master/"
-
-# mysql root password
-# get ready to input it, it will pop up
 
 # ------------ end config -----------------
 
@@ -91,7 +91,9 @@ if $doWebServer ; then
     add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
     apt-get update
     apt-get -y purge apache2* libapache2*
-    apt-get -y install git mariadb-server mariadb-client redis-server nginx php5 php5-cli php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-redis php-apc php5-curl curl
+    apt-get -y install git redis-server curl nginx php5 php5-cli php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-redis php-apc php5-curl
+    DEBIAN_FRONTEND=noninteractive apt-get -y install mariadb-server mariadb-client
+    mysqladmin -u root password $mariadbPassword
 
     # fix up some configs
     sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
@@ -154,7 +156,7 @@ if $doWebServer ; then
     # change owner and permissions
     chown -R www-data.www-data /data/sites
     find /data/sites -type d -print0 | xargs -0 chmod 0755
-    find /data/sites -type f -print0 | xargs -0 chmod 0644
+    #find /data/sites -type f -print0 | xargs -0 chmod 0644 # not needed because there are no files in there
 
     # clean up and download site.sh and backup.sh
     wget ${downloadPath}site.sh
