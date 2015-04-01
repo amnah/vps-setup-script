@@ -6,14 +6,14 @@
 email=""
 
 # user
-username=""
-password=""
+username="ubuntu"
+password="z" # change to something more secure
 
 # public key for putting into .ssh/authorized_keys
 pubkey="" # "ssh-rsa AAAAB3NzaC1................"
 
 # mariadb root password
-mariadbPassword="z" # change this to something more secure
+mariadbPassword="z" # change to something more secure
 
 # ssh port
 sshPort="22"
