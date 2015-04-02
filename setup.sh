@@ -2,29 +2,29 @@
 
 
 # ------------ config -----------------
-# set up email for logwatch
-email=""
-
-# user
-username="ubuntu"
-password="z" # change to something more secure
-
-# public key for putting into .ssh/authorized_keys
-pubkey="" # "ssh-rsa AAAAB3NzaC1................"
-
-# mariadb root password
-mariadbPassword="z" # change to something more secure
-
-# ssh port
-sshPort="22"
-
-
-
 # setup
 doSetup=true
 doWebServer=true
 doVnc=false
 
+# set up email for logwatch
+email=""
+
+# user
+username="ubuntu"
+password="z"
+
+# public key for putting into .ssh/authorized_keys
+# "ssh-rsa AAAAB3NzaC1................"
+pubkey=""
+
+# mariadb root password
+mariadbPassword="z"
+
+# ssh port
+sshPort="22"
+
+# download path (via wget)
 downloadPath="https://raw.github.com/amnah/vps-setup-script/master/"
 
 # ------------ end config -----------------
@@ -98,20 +98,16 @@ if $doWebServer ; then
     # fix up some configs
     sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
 
-    # set up nginx
+    # set up data dir and nginx
+    mkdir -p /data/www
+    mkdir -p /data/logs
     mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
     mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
     rm /etc/nginx/sites-enabled/default
     wget ${downloadPath}files/nginx.conf -O /etc/nginx/nginx.conf
     wget ${downloadPath}files/sites-available/_baseApps -O /etc/nginx/sites-available/_baseApps
-
-    # set up data dir
-    mkdir -p /data/sites /data/logs
-    ln -s /etc/nginx/nginx.conf /data/nginx.conf
-    ln -s /etc/nginx/sites-available/ /data
-    ln -s /etc/nginx/sites-enabled/ /data
-    ln -s /etc/nginx/sites-available/_baseApps /etc/nginx/sites-enabled/_baseApps
     wget ${downloadPath}files/example.site -O /data/example.site
+    ln -s /etc/nginx/sites-available/_baseApps /etc/nginx/sites-enabled/_baseApps
 
     # download and install/move phpMyAdmin
     # note: file gets named "download"
@@ -142,7 +138,7 @@ if $doWebServer ; then
     wget ${downloadPath}files/filter.d/nginx-auth.conf -O /etc/fail2ban/filter.d/nginx-auth.conf
     wget ${downloadPath}files/filter.d/nginx-login.conf -O /etc/fail2ban/filter.d/nginx-login.conf
     wget ${downloadPath}files/filter.d/nginx-noscript.conf -O /etc/fail2ban/filter.d/nginx-noscript.conf
-    wget ${downloadPath}files/filter.d/nginx-dos.conf -O /etc/fail2ban/filter.d/nginx-dos.conf
+    #wget ${downloadPath}files/filter.d/nginx-dos.conf -O /etc/fail2ban/filter.d/nginx-dos.conf
     wget ${downloadPath}files/jail.local.tmp -O /etc/fail2ban/jail.local.tmp
 
     # combine the tmp jail.local.tmp into the preconfigured jail.conf
@@ -154,9 +150,9 @@ if $doWebServer ; then
     service nginx restart
 
     # change owner and permissions
-    chown -R www-data.www-data /data/sites
-    find /data/sites -type d -print0 | xargs -0 chmod 0755
-    #find /data/sites -type f -print0 | xargs -0 chmod 0644 # not needed because there are no files in there
+    chown -R www-data.www-data /data/www
+    find /data/www -type d -print0 | xargs -0 chmod 0775
+    #find /data/www -type f -print0 | xargs -0 chmod 0664 # not needed because there are no files in there
 
     # clean up and download site.sh and backup.sh
     wget ${downloadPath}site.sh
