@@ -22,7 +22,7 @@ server {
 server {
 
     server_name example.site;
-    root /data/sites/example.site;
+    root /data/www/example.site;
     access_log /data/logs/example.site/access.log;
     error_log /data/logs/example.site/error.log;
 
