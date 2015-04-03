@@ -3,7 +3,7 @@
 # source "${HOME}/.bash_aliases"
 # rsync -av ec2:~/se/bitstarter /d/node
 # find / -name "*.sock"
-
+# find . -type f -print0 | xargs -0 chmod 0664 && find . -type d -print0 | xargs -0 chmod 0775 && chown -R www-data.www-data .
 # ---------------------------------------
 # bash options and aliases
 # ---------------------------------------
@@ -17,7 +17,6 @@ alias bashh="nano ~/.bash_history"
 alias bashe="nano ~/.eternal_history"
 alias composer="php ~/composer.phar"
 alias nano="nano --tabstospaces --tabsize=4 --const --nonewlines --autoindent"
-alias chall="find . -type f -print0 | xargs -0 chmod 0644 && find . -type d -print0 | xargs -0 chmod 0755 && chown -R www-data.www-data ."
 
 # ---------------------------------------
 # vnc

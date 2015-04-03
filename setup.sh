@@ -151,17 +151,19 @@ if $doWebServer ; then
 
     # change owner and permissions
     chown -R www-data.www-data /data/www
+    adduser $username www-data    # add user to www-data group
     find /data/www -type d -print0 | xargs -0 chmod 0775
     #find /data/www -type f -print0 | xargs -0 chmod 0664 # not needed because there are no files in there
 
-    # clean up and download site.sh and backup.sh
-    wget ${downloadPath}site.sh
+    # download backup and site scripts
     wget ${downloadPath}backup.sh
-    chmod 700 site.sh backup.sh
+    wget ${downloadPath}site.sh -O /home/$username/site.sh
+    chown $username.$username /home/$username/site.sh
+    chmod 700 backup.sh /home/$username/site.sh
 
     # display message about site.sh
     echo -e "------------------------------------------"
-    echo -e "Now go! Modify and run:\n"
+    echo -e "Now log into your '$username' account and modify/run : \n"
     echo -e "   ./site.sh"
 
 fi
@@ -181,7 +183,7 @@ if $doVnc ; then
     echo -e "   echo 'password' | vncpasswd -f > ~/.vnc/passwd"
 fi
 
-# chmod script so it can't run again
+# chmod this script so it can't run again
 chmod 400 setup.sh
 
 # display finished message

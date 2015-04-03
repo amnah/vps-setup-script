@@ -12,24 +12,19 @@ site=""
 
 # create folders and files
 mkdir /data/www/$site
-mkdir /data/logs/$site
-touch /data/logs/$site/access.log
-touch /data/logs/$site/error.log
-echo "hello world" > data/www/$site/index.php
+echo "hello world" > /data/www/$site/index.php
+sudo mkdir /data/logs/$site
+sudo touch /data/logs/$site/access.log
+sudo touch /data/logs/$site/error.log
 
 # copy server block
-cp /data/example.site /etc/nginx/sites-available/$site
-sed -i "s/example.site/${site}/g" /etc/nginx/sites-available/$site
-sed -i "s/example\\\.site/${site/./\\\\\.}/g" /etc/nginx/sites-available/$site # wooo that's a lot of backslashes
-ln -s /etc/nginx/sites-available/$site /etc/nginx/sites-enabled/
-
-# change owner and permissions
-chown -R www-data.www-data data/www/$site
-find data/www/$site -type d -print0 | xargs -0 chmod 0755
-find data/www/$site -type f -print0 | xargs -0 chmod 0644
+sudo cp /data/example.site /etc/nginx/sites-available/$site
+sudo sed -i "s/example.site/${site}/g" /etc/nginx/sites-available/$site
+sudo sed -i "s/example\\\.site/${site/./\\\\\.}/g" /etc/nginx/sites-available/$site # wooo that's a lot of backslashes
+sudo ln -s /etc/nginx/sites-available/$site /etc/nginx/sites-enabled/
 
 # reload nginx
-service nginx reload
+sudo service nginx reload
 
 
 
