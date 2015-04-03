@@ -25,7 +25,8 @@ mariadbPassword="z"
 sshPort="22"
 
 # download path (via wget)
-downloadPath="https://raw.github.com/amnah/vps-setup-script/master/"
+# ensure / at end
+downloadPath="https://raw.githubusercontent.com/amnah/vps-setup-script/master/"
 
 # ------------ end config -----------------
 
