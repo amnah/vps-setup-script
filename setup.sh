@@ -98,6 +98,7 @@ if $doWebServer ; then
 
     # fix up some configs
     sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
+    sed -i "s/;always_populate_raw_post_data = -1/always_populate_raw_post_data = -1/g" /etc/php5/fpm/php.ini
 
     # set up data dir and nginx
     mkdir -p /data/www
