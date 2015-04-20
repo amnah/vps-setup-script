@@ -88,6 +88,7 @@ if $doWebServer ; then
     export LANG=C.UTF-8
     add-apt-repository -y ppa:git-core/ppa
     add-apt-repository -y ppa:ondrej/php5-5.6
+    add-apt-repository -y ppa:chris-lea/redis-server
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
     add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
     apt-get update
