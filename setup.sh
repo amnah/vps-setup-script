@@ -86,14 +86,14 @@ if $doWebServer ; then
     # git php nginx mysql
     # http://www.howtoforge.com/installing-nginx-with-php5-and-php-fpm-and-mysql-support-lemp-on-ubuntu-12.04-lts
     export LANG=C.UTF-8
+    apt-get -y purge apache2* libapache2*
     add-apt-repository -y ppa:git-core/ppa
     add-apt-repository -y ppa:ondrej/php5-5.6
     add-apt-repository -y ppa:chris-lea/redis-server
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
     add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
     apt-get update
-    apt-get -y purge apache2* libapache2*
-    apt-get -y install git redis-server curl nginx php5 php5-cli php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-redis php-apc php5-curl
+    apt-get -y install unzip fail2ban git redis-server curl nginx php5 php5-cli php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-redis php-apc php5-curl
     DEBIAN_FRONTEND=noninteractive apt-get -y install mariadb-server mariadb-client
     mysqladmin -u root password $mariadbPassword
 
