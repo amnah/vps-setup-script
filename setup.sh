@@ -111,6 +111,9 @@ if $doWebServer ; then
     wget ${downloadPath}files/sites-available/_baseApps -O /etc/nginx/sites-available/_baseApps
     wget ${downloadPath}files/example.site -O /data/example.site
     ln -s /etc/nginx/sites-available/_baseApps /etc/nginx/sites-enabled/_baseApps
+    ln -s /etc/nginx/sites-available /data/
+    ln -s /etc/nginx/nginx/nginx.conf /data/
+    ln -s /data/www /var/
 
     # download and install/move phpMyAdmin
     # note: file gets named "download"
