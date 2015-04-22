@@ -6,7 +6,8 @@ enabled = true
 filter = nginx-auth
 action = iptables-multiport[name=NoAuthFailures, port="http,https"]
 logpath = /data/logs/*/*error*.log
-bantime = 600 # 10 minutes
+# 10 minutes
+bantime = 600
 maxretry = 6
 
 [nginx-login]
@@ -14,31 +15,35 @@ enabled = true
 filter = nginx-login
 action = iptables-multiport[name=NoLoginFailures, port="http,https"]
 logpath = /data/logs/*/*access*.log
-bantime = 600 # 10 minutes
+# 10 minutes
+bantime = 600
 maxretry = 6
- 
+
 [nginx-badbots]
 enabled  = true
 filter = apache-badbots
 action = iptables-multiport[name=BadBots, port="http,https"]
 logpath = /data/logs/*/*access*.log
-bantime = 86400 # 1 day
+# 1 day
+bantime = 86400
 maxretry = 1
- 
+
 [nginx-noscript]
 enabled = true
 action = iptables-multiport[name=NoScript, port="http,https"]
 filter = nginx-noscript
 logpath = /data/logs/*/*access*.log
 maxretry = 6
-bantime  = 86400 # 1 day
- 
+# 1 day
+bantime  = 86400
+
 [nginx-proxy]
 enabled = true
 action = iptables-multiport[name=NoProxy, port="http,https"]
 filter = proxy
 logpath = /data/logs/*/*access*.log
 maxretry = 0
-bantime = 86400 # 1 day
+# 1 day
+bantime = 86400
 
 # http://serverfault.com/questions/420895/how-to-use-fail2ban-for-nginx
