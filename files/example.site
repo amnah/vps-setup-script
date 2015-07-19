@@ -35,16 +35,16 @@ server {
     #}
 
     location / {
-        # default
-        try_files $uri $uri/ /index.php;
+        # laravel, yii2, wordpress
+        # http://wiki.nginx.org/WordPress
+        try_files $uri $uri/ /index.php?$args;
 
-        # laravel, joomla, drupal, etc
+        # joomla, drupal, etc
         # http://wiki.nginx.org/Pitfalls (Front Controller Pattern based packages)
         #try_files $uri $uri/ /index.php?q=$uri&$args;
 
-        # wordpress
-        # http://wiki.nginx.org/WordPress
-        #try_files $uri $uri/ /index.php?$args;
+        # default
+        #try_files $uri $uri/ /index.php;
 
         # nodejs
         #proxy_pass http://localhost:3005;
