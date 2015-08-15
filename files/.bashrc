@@ -17,6 +17,8 @@ alias bashh="nano ~/.bash_history"
 alias bashe="nano ~/.eternal_history"
 alias composer="php ~/composer.phar"
 alias nano="nano --tabstospaces --tabsize=4 --const --nonewlines --autoindent"
+alias shutdown="sudo shutdown -h now"
+alias reboot="sudo reboot"
 
 # ---------------------------------------
 # vnc
