@@ -93,7 +93,7 @@ if $doWebServer ; then
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
     add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
     apt-get update
-    apt-get -y install unzip fail2ban git redis-server curl nginx php5 php5-cli php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-redis php-apc php5-curl
+    apt-get -y install unzip fail2ban git redis-server memcached curl nginx php5 php5-cli php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-redis php5-memcached php-apc php5-curl
     DEBIAN_FRONTEND=noninteractive apt-get -y install mariadb-server mariadb-client
     mysqladmin -u root password $mariadbPassword
 
