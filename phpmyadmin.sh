@@ -13,7 +13,7 @@ sudo rm -rf /var/www/phpMyAdmin-*
 
 # download and unzip
 sudo rm download
-sudo wget $url
+sudo wget $url -O download
 sudo unzip -q download
 sudo rm download
 
@@ -23,12 +23,12 @@ sudo rm -f /var/www/phpMyAdmin
 sudo ln -s /var/www/phpMyAdmin-*/ /var/www/phpMyAdmin
 
 # move config in
-sudo mv config.inc.php /var/www/phpMyAdmin/
+sudo cp config.inc.php /var/www/phpMyAdmin/
 
 # update permissions
 sudo chown -R www-data.www-data /var/www/phpMyAdmin-*/
-sudo find /var/www/phpMyAdmin-*/ -type d -print0 | xargs -0 chmod 0755
-sudo find /var/www/phpMyAdmin-*/ -type f -print0 | xargs -0 chmod 0644
+sudo find /var/www/phpMyAdmin-*/ -type d -print0 | xargs -0 sudo chmod 0755
+sudo find /var/www/phpMyAdmin-*/ -type f -print0 | xargs -0 sudo chmod 0644
 
 # echo
 echo -e "------------------------------------------"
