@@ -6,44 +6,43 @@
 # description: Get a mysqldump of all mysql databases.
 # *************************************************************
 
-# name of database user ( must have LOCK_TABLES rights )...
-dbUsername='xxx'
+# name of database user ( must have LOCK_TABLES rights )
+dbUsername="xxx"
 
-# password of database user...
+# password of database user
 dbPassword='yyy'
 
-# path to backup directory...
-dbBackup='/data/dumps'
-
-# delete old dumps
-deleteOld=false
+# path to backup directory
+backupDir="~/dumps"
 
 # *************************************************************
 
-# get current date ( YYYY-MM-DD )...
+# calculate current date ( YYYY-MM-DD ) and backup file
 date=$( date +%Y%m%d-%H%M%S )
+filename="$date.tar.gz"
+backupFile="$backupDir/$filename"
 
-# create backup directory if not exists...
-[ ! -d "$dbBackup" ] && mkdir -p $dbBackup
+# create backup directory if it doesn't exist
+[ ! -d "$backupDir" ] && mkdir -p $backupDir
 
-# delete all old mysqldumps...
-if $deleteOld ; then
-    find $dbBackup -type f -name '*.sql.gz' -exec rm -rf {} ';' >/dev/null 2>&1
-fi
+# delete old sql dumps
+sqlDir="/data/sql"
+[ ! -d "$sqlDir" ] && mkdir -p $sqlDir
+rf -rf $sqlDir/*
 
-# loop all databases...
+# loop all databases
 for db in $( mysql -u $dbUsername --password=$dbPassword -Bse "show databases" ); do
 
     if [[ "$db" != "mysql" ]] && [[ "$db" != "test" ]] && [[ "$db" != "performance_schema" ]] && [[ "$db" != "information_schema" ]] && [[ "$db" != _* ]] ; then
         # get mysqldump of current database...
-        fullPath="$dbBackup/$db-$date.sql.gz"
-        echo "Dumping $db into $fullPath ..."
-        mysqldump -u $dbUsername --password=$dbPassword --opt --databases $db | gzip -9 > $fullPath
+        sqlFile="$sqlDir/$db.sql.gz"
+        echo "Dumping $db into $sqlFile ..."
+        mysqldump -u $dbUsername --password=$dbPassword --opt --databases $db | gzip -9 > $sqlFile
     fi
 
 done
 
-# backup data sites
-backupPath="/root/data/$date.tar.gz"
-tar -czhpf $backupPath /data --exclude "vendor" --exclude "node_modules" --exclude "/data/phpMyAdmin*" \
-    --exclude "web/assets/*"
+tar -czhpf $backupFile /data --exclude "vendor" --exclude "vendor2" --exclude "/data/phpMyAdmin*" --exclude "f.amnah.net" \
+        --exclude "web/assets/*" --exclude "node_modules"
+
+#./dropbox_uploader.sh upload $backupFile $filename

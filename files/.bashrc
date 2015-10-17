@@ -19,6 +19,7 @@ alias composer="php ~/composer.phar"
 alias nano="nano --tabstospaces --tabsize=4 --const --nonewlines --autoindent"
 alias shutdown="sudo shutdown -h now"
 alias reboot="sudo reboot"
+#alias zf="mount -n -o remount,ro -t ext2 /dev/mapper/ubunty--vg-root / && zerofree /dev/mapper/ubunty--vg-root"
 
 # ---------------------------------------
 # vnc
