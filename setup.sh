@@ -131,7 +131,7 @@ if $doWebServer ; then
     touch /var/log/nginx/phpMyAdmin/error.log
 
     # add logrotate to site logs and change rotation settings
-    sed -i "s/*.log/*.log \/data\/log\/*\/*.log/g" /etc/logrotate.d/nginx
+    sed -i "s/*.log/*.log \/var\/log\/nginx\/*\/*.log/g" /etc/logrotate.d/nginx
     sed -i "s/daily/size=50M/g" /etc/logrotate.d/nginx
     sed -i "s/daily/size=50M/g" /etc/logrotate.d/mysql-server
     sed -i "s/rotate 7/rotate 52/g" /etc/logrotate.d/mysql-server
