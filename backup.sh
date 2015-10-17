@@ -7,7 +7,7 @@
 # *************************************************************
 
 # name of database user ( must have LOCK_TABLES rights )
-dbUsername="xxx"
+dbUsername='xxx'
 
 # password of database user
 dbPassword='yyy'
