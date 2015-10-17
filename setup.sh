@@ -103,7 +103,7 @@ if $doWebServer ; then
 
     # fix up some configs
     sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
-    sed -i "s/;always_populate_raw_post_data = On/always_populate_raw_post_data = -1/g" /etc/php5/fpm/php.ini
+    sed -i "s/;always_populate_raw_post_data = -1/always_populate_raw_post_data = -1/g" /etc/php5/fpm/php.ini
 
     # set up nginx
     mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
@@ -160,6 +160,7 @@ if $doWebServer ; then
     # change owner and permissions
     chown -R www-data.www-data /var/www
     adduser $username www-data    # add user to www-data group
+    adduser $username adm         # add user to adm group (for accessing /var/log)
     find /var/www -type d -print0 | xargs -0 chmod 0775
     #find /var/www -type f -print0 | xargs -0 chmod 0664 # not needed because there are no files in there
 
