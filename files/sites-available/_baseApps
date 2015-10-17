@@ -12,10 +12,10 @@ server {
 # phpMyAdmin
 # -----------------------------------------------------
 server {
-    server_name dbadmin.*;
-    root /data/phpMyAdmin;
-    access_log /data/logs/phpMyAdmin/access.log;
-    error_log /data/logs/phpMyAdmin/error.log;
+    server_name dbadminz.*;
+    root /var/www/phpMyAdmin;
+    access_log /var/log/nginx/phpMyAdmin/access.log;
+    error_log /var/log/nginx/phpMyAdmin/error.log;
 
     listen 80;
     #listen 443 default_server ssl;
@@ -28,10 +28,6 @@ server {
 
     # process php files
     location ~ \.php$ {
-
-        # params
-        fastcgi_param MY_ENV dev;
-
         try_files $uri =404;
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
         fastcgi_pass unix:/var/run/php5-fpm.sock;

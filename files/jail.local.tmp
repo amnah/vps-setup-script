@@ -5,7 +5,7 @@
 enabled = true
 filter = nginx-auth
 action = iptables-multiport[name=NoAuthFailures, port="http,https"]
-logpath = /data/logs/*/*error*.log
+logpath = /var/log/nginx/*/*error*.log
 # 10 minutes
 bantime = 600
 maxretry = 6
@@ -14,7 +14,7 @@ maxretry = 6
 enabled = true
 filter = nginx-login
 action = iptables-multiport[name=NoLoginFailures, port="http,https"]
-logpath = /data/logs/*/*access*.log
+logpath = /var/log/nginx/*/*access*.log
 # 10 minutes
 bantime = 600
 maxretry = 6
@@ -23,7 +23,7 @@ maxretry = 6
 enabled  = true
 filter = apache-badbots
 action = iptables-multiport[name=BadBots, port="http,https"]
-logpath = /data/logs/*/*access*.log
+logpath = /var/log/nginx/*/*access*.log
 # 1 day
 bantime = 86400
 maxretry = 1
@@ -32,7 +32,7 @@ maxretry = 1
 enabled = true
 action = iptables-multiport[name=NoScript, port="http,https"]
 filter = nginx-noscript
-logpath = /data/logs/*/*access*.log
+logpath = /var/log/nginx/*/*access*.log
 maxretry = 6
 # 1 day
 bantime  = 86400
@@ -41,7 +41,7 @@ bantime  = 86400
 enabled = true
 action = iptables-multiport[name=NoProxy, port="http,https"]
 filter = proxy
-logpath = /data/logs/*/*access*.log
+logpath = /var/log/nginx/*/*access*.log
 maxretry = 0
 # 1 day
 bantime = 86400

@@ -7,8 +7,11 @@ doSetup=true
 doWebServer=true
 doVnc=false
 
-# set up email for logwatch
-email=""
+# set email for logwatch (will not install logwatch if empty)
+#email=""
+
+# set fail2ban
+installFail2Ban=true
 
 # user
 username="ubuntu"
@@ -73,10 +76,11 @@ if $doSetup ; then
     chown -R $username.$username /home/$username
     service ssh restart
 
-    # fail2ban and logwatch
-    apt-get -y install fail2ban logwatch
-    sed -i "s/--output mail/--output mail --mailto $email --detail high/g" /etc/cron.daily/00logwatch
-    service fail2ban restart
+    # logwatch
+    if [ -n "$email" ]; then
+        apt-get -y install logwatch
+        sed -i "s/--output mail/--output mail --mailto $email --detail high/g" /etc/cron.daily/00logwatch
+    fi
 
     # empty out mail file
     cat /dev/null > /var/mail/root
@@ -99,79 +103,80 @@ if $doWebServer ; then
 
     # fix up some configs
     sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
-    sed -i "s/;always_populate_raw_post_data = -1/always_populate_raw_post_data = -1/g" /etc/php5/fpm/php.ini
+    sed -i "s/;always_populate_raw_post_data = On/always_populate_raw_post_data = -1/g" /etc/php5/fpm/php.ini
 
-    # set up data dir and nginx
-    mkdir -p /data/www
-    mkdir -p /data/logs
+    # set up nginx
     mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
     mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
     rm /etc/nginx/sites-enabled/default
     wget ${downloadPath}files/nginx.conf -O /etc/nginx/nginx.conf
     wget ${downloadPath}files/sites-available/_baseApps -O /etc/nginx/sites-available/_baseApps
-    wget ${downloadPath}files/example.site -O /data/example.site
-    ln -s /etc/nginx/sites-available/_baseApps /etc/nginx/sites-enabled/_baseApps
-    ln -s /etc/nginx/sites-available /data/
+
+    # set up data dir
+    mkdir -p /data
+    mkdir -p /var/www
+    ln -s /var/www /data/
     ln -s /etc/nginx/nginx/nginx.conf /data/
-    ln -s /data/www /var/
+    ln -s /etc/nginx/sites-available /data/
+    ln -s /etc/nginx/sites-enabled /data/
+    ln -s /etc/nginx/sites-available/_baseApps /etc/nginx/sites-enabled/
+    ln -s /var/log/nginx /data/log
 
-    # download and install/move phpMyAdmin
-    # note: file gets named "download"
-    wget http://sourceforge.net/projects/phpmyadmin/files/latest/download
-    unzip -q download
-    rm -f download
-    mv phpMyAdmin* /data
-    ln -s /data/phpMyAdmin* /data/phpMyAdmin
-    wget ${downloadPath}files/config.inc.php -O /data/phpMyAdmin/config.inc.php
-
-    # setup default + phpMyAdmin logs in nginx
-    mkdir /data/logs/_
-    mkdir /data/logs/phpMyAdmin
-    touch /data/logs/_/access.log
-    touch /data/logs/_/error.log
-    touch /data/logs/phpMyAdmin/access.log
-    touch /data/logs/phpMyAdmin/error.log
+    # set up nginx logs
+    mkdir /var/log/nginx/_
+    mkdir /var/log/nginx/phpMyAdmin
+    touch /var/log/nginx/_/access.log
+    touch /var/log/nginx/_/error.log
+    touch /var/log/nginx/phpMyAdmin/access.log
+    touch /var/log/nginx/phpMyAdmin/error.log
 
     # add logrotate to site logs and change rotation settings
-    sed -i "s/*.log/*.log \/data\/logs\/*\/*.log/g" /etc/logrotate.d/nginx
+    sed -i "s/*.log/*.log \/data\/log\/*\/*.log/g" /etc/logrotate.d/nginx
     sed -i "s/daily/size=50M/g" /etc/logrotate.d/nginx
     sed -i "s/daily/size=50M/g" /etc/logrotate.d/mysql-server
     sed -i "s/rotate 7/rotate 52/g" /etc/logrotate.d/mysql-server
 
     # add nginx configurations for fail2ban
     # http://snippets.aktagon.com/snippets/554-how-to-secure-an-nginx-server-with-fail2ban
-    wget ${downloadPath}files/filter.d/proxy.conf -O /etc/fail2ban/filter.d/proxy.conf
-    wget ${downloadPath}files/filter.d/nginx-auth.conf -O /etc/fail2ban/filter.d/nginx-auth.conf
-    wget ${downloadPath}files/filter.d/nginx-login.conf -O /etc/fail2ban/filter.d/nginx-login.conf
-    wget ${downloadPath}files/filter.d/nginx-noscript.conf -O /etc/fail2ban/filter.d/nginx-noscript.conf
-    #wget ${downloadPath}files/filter.d/nginx-dos.conf -O /etc/fail2ban/filter.d/nginx-dos.conf
-    wget ${downloadPath}files/jail.local.tmp -O /etc/fail2ban/jail.local.tmp
+    if $installFail2Ban ; then
+        apt-get -y install fail2ban
+        wget ${downloadPath}files/filter.d/proxy.conf -O /etc/fail2ban/filter.d/proxy.conf
+        wget ${downloadPath}files/filter.d/nginx-auth.conf -O /etc/fail2ban/filter.d/nginx-auth.conf
+        wget ${downloadPath}files/filter.d/nginx-login.conf -O /etc/fail2ban/filter.d/nginx-login.conf
+        wget ${downloadPath}files/filter.d/nginx-noscript.conf -O /etc/fail2ban/filter.d/nginx-noscript.conf
+        #wget ${downloadPath}files/filter.d/nginx-dos.conf -O /etc/fail2ban/filter.d/nginx-dos.conf
+        wget ${downloadPath}files/jail.local.tmp -O /etc/fail2ban/jail.local.tmp
 
-    # combine the tmp jail.local.tmp into the preconfigured jail.conf
-    cat /etc/fail2ban/jail.conf /etc/fail2ban/jail.local.tmp > /etc/fail2ban/jail.local
-    rm /etc/fail2ban/jail.local.tmp
+        # combine the tmp jail.local.tmp into the preconfigured jail.conf
+        cat /etc/fail2ban/jail.conf /etc/fail2ban/jail.local.tmp > /etc/fail2ban/jail.local
+        rm /etc/fail2ban/jail.local.tmp
+        service fail2ban restart
+    fi
 
     # restart nginx services
     service php5-fpm restart
     service nginx restart
 
     # change owner and permissions
-    chown -R www-data.www-data /data/www
+    chown -R www-data.www-data /var/www
     adduser $username www-data    # add user to www-data group
-    find /data/www -type d -print0 | xargs -0 chmod 0775
-    #find /data/www -type f -print0 | xargs -0 chmod 0664 # not needed because there are no files in there
+    find /var/www -type d -print0 | xargs -0 chmod 0775
+    #find /var/www -type f -print0 | xargs -0 chmod 0664 # not needed because there are no files in there
 
     # download backup and site scripts
     wget ${downloadPath}backup.sh
+    chmod 700 backup.sh
     wget ${downloadPath}site.sh -O /home/$username/site.sh
-    chown $username.$username /home/$username/site.sh
-    chmod 700 backup.sh /home/$username/site.sh
+    wget ${downloadPath}phpmyadmin.sh -O /home/$username/phpmyadmin.sh
+    wget ${downloadPath}files/example.site -O /home/$username/example.site
+    wget ${downloadPath}files/config.inc.php -O /home/$username/config.inc.php
+    chown $username.$username /home/$username/site.sh /home/$username/phpmyadmin.sh
+    chmod 700 /home/$username/site.sh /home/$username/phpmyadmin.sh
 
     # display message about site.sh
     echo -e "------------------------------------------"
     echo -e "Now log into your '$username' account and modify/run : \n"
     echo -e "   ./site.sh"
-
 fi
 
 if $doVnc ; then

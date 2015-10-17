@@ -3,10 +3,10 @@
 # -----------------------------------------------------
 # invalid subdomains - redirect to main site
 # -----------------------------------------------------
-server {
-    server_name "~^(?<subdomain>\w+)\.example\.site$";  # note the escaped period - example\.site
-    return 301 $scheme://example.site$request_uri;
-}
+#server {
+#    server_name "~^(?<subdomain>\w+)\.example\.site$";  # note the escaped period - example\.site
+#    return 301 $scheme://example.site$request_uri;
+#}
 
 # -----------------------------------------------------
 # www -> redirect to main site
@@ -22,9 +22,9 @@ server {
 server {
 
     server_name example.site;
-    root /data/www/example.site;
-    access_log /data/logs/example.site/access.log;
-    error_log /data/logs/example.site/error.log;
+    root /var/www/example.site;
+    access_log /var/log/nginx/example.site/access.log;
+    error_log /var/log/nginx/example.site/error.log;
 
     listen 80;
     #listen 443 default_server ssl;
