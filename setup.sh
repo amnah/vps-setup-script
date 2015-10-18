@@ -122,6 +122,8 @@ if $doWebServer ; then
     ln -s /etc/nginx/sites-enabled /data/
     ln -s /etc/nginx/sites-available/_baseApps /etc/nginx/sites-enabled/
     ln -s /var/log/nginx /data/log
+    mkdir /etc/nginx/ssl
+    ln -s /etc/nginx/ssl /data/
 
     # set up nginx logs
     mkdir /var/log/nginx/_
