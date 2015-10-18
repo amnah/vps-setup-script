@@ -28,7 +28,7 @@ backupFile="$backupDir/$filename"
 # delete old sql dumps
 sqlDir="/data/sql"
 [ ! -d "$sqlDir" ] && mkdir -p $sqlDir
-rf -rf $sqlDir/*
+rm -rf $sqlDir/*
 
 # loop all databases
 for db in $( mysql -u $dbUsername --password=$dbPassword -Bse "show databases" ); do

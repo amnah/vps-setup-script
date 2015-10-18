@@ -116,7 +116,7 @@ if $doWebServer ; then
     mkdir -p /data
     mkdir -p /var/www
     ln -s /var/www /data/
-    ln -s /etc/nginx/nginx/nginx.conf /data/
+    ln -s /etc/nginx/nginx.conf /data/
     ln -s /etc/nginx/sites-available /data/
     ln -s /etc/nginx/sites-enabled /data/
     ln -s /etc/nginx/sites-available/_baseApps /etc/nginx/sites-enabled/
