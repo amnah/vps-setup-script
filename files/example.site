@@ -1,5 +1,4 @@
 
-
 # -----------------------------------------------------
 # invalid subdomains - redirect to main site
 # -----------------------------------------------------
@@ -43,9 +42,6 @@ server {
         # http://wiki.nginx.org/Pitfalls (Front Controller Pattern based packages)
         #try_files $uri $uri/ /index.php?q=$uri&$args;
 
-        # default
-        #try_files $uri $uri/ /index.php;
-
         # nodejs
         #proxy_pass http://localhost:3005;
         #proxy_http_version 1.1;
@@ -64,7 +60,7 @@ server {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
         fastcgi_pass unix:/var/run/php5-fpm.sock;
         fastcgi_index index.php;
-        include fastcgi_params;
+        include fastcgi.conf;
     }
 
     # serve static files directly

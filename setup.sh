@@ -91,6 +91,7 @@ if $doWebServer ; then
     # http://www.howtoforge.com/installing-nginx-with-php5-and-php-fpm-and-mysql-support-lemp-on-ubuntu-12.04-lts
     export LANG=C.UTF-8
     apt-get -y purge apache2* libapache2*
+    add-apt-repository -y ppa:nginx/stable
     add-apt-repository -y ppa:git-core/ppa
     add-apt-repository -y ppa:ondrej/php5-5.6
     add-apt-repository -y ppa:chris-lea/redis-server
