@@ -172,6 +172,7 @@ if $doWebServer ; then
     chmod 700 backup.sh
     wget ${downloadPath}site.sh -O /home/$username/site.sh
     wget ${downloadPath}phpmyadmin.sh -O /home/$username/phpmyadmin.sh
+    wget ${downloadPath}startNode.sh -O /home/$username/startNode.sh
     wget ${downloadPath}files/example.site -O /home/$username/example.site
     wget ${downloadPath}files/config.inc.php -O /home/$username/config.inc.php
     chown $username.$username /home/$username/site.sh /home/$username/phpmyadmin.sh
