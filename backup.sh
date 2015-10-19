@@ -13,7 +13,7 @@ dbUsername='xxx'
 dbPassword='yyy'
 
 # path to backup directory
-backupDir="~/dumps"
+backupDir="/root/dumps"
 
 # *************************************************************
 
