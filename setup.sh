@@ -44,7 +44,7 @@ if $doSetup ; then
     DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 
     # nano + other apps for add-apt-repository cmd
-    # http://stackoverflow.com/a/16032073
+    # http://stackoverflow.com/a/16032073 - page deleted :(
     apt-get -y install nano python-software-properties software-properties-common
 
     # update time
@@ -87,24 +87,20 @@ if $doSetup ; then
 fi
 
 if $doWebServer ; then
-    # git php nginx mysql
-    # http://www.howtoforge.com/installing-nginx-with-php5-and-php-fpm-and-mysql-support-lemp-on-ubuntu-12.04-lts
+    # install git nginx php mariadb
     export LANG=C.UTF-8
-    apt-get -y purge apache2* libapache2*
     add-apt-repository -y ppa:nginx/stable
     add-apt-repository -y ppa:git-core/ppa
-    add-apt-repository -y ppa:ondrej/php5-5.6
+    add-apt-repository -y ppa:ondrej/php-7.0
     add-apt-repository -y ppa:chris-lea/redis-server
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
     add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
     apt-get update
-    apt-get -y install unzip git redis-server memcached curl nginx php5 php5-cli php5-fpm php5-mysql php5-gd php5-imagick php5-mcrypt php5-redis php5-memcached php5-curl php-apc
+    apt-get -y install unzip git redis-server memcached curl nginx
+    apt-get -y install php7.0 php7.0-cli php7.0-fpm php7.0-mysql php7.0-curl php7.0-dev php7.0-gd
+    apt-get -y purge apache2* libapache2* php5-*
     DEBIAN_FRONTEND=noninteractive apt-get -y install mariadb-server mariadb-client
     mysqladmin -u root password $mariadbPassword
-
-    # fix up some configs
-    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
-    sed -i "s/;always_populate_raw_post_data = -1/always_populate_raw_post_data = -1/g" /etc/php5/fpm/php.ini
 
     # set up nginx
     mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
@@ -157,7 +153,7 @@ if $doWebServer ; then
     fi
 
     # restart nginx services
-    service php5-fpm restart
+    service php7.0-fpm restart
     service nginx restart
 
     # change owner and permissions
