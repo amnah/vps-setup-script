@@ -24,8 +24,8 @@ server {
     root /var/www/example.site;
     access_log /var/log/nginx/example.site/access.log;
     error_log /var/log/nginx/example.site/error.log;
+    include /etc/nginx/sites-available/_common;
 
-    listen 80;
     #listen 443 default_server ssl;
     #ssl_certificate     /etc/nginx/ssl/example.site_combined.crt;
     #ssl_certificate_key /etc/nginx/ssl/example.site.key;
@@ -49,36 +49,5 @@ server {
         #proxy_set_header Connection 'upgrade';
         #proxy_set_header Host $host;
         #proxy_cache_bypass $http_upgrade;
-    }
-
-    # process php files
-    location ~ \.php$ {
-        # params
-        fastcgi_param MY_ENV dev;
-
-        try_files $uri =404;
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-        fastcgi_index index.php;
-        include fastcgi.conf;
-    }
-
-    # serve static files directly
-    location ~* \.(jpg|jpeg|gif|css|png|js|ico|html)$ {
-        access_log off;
-        log_not_found off;
-        expires max;
-    }
-
-    # robots.txt
-    location = /robots.txt {
-        allow all;
-        access_log off;
-        log_not_found off;
-    }
-
-    # prevent access to htaccess/htpasswd
-    location ~ /\.ht {
-        deny all;
     }
 }

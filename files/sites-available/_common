@@ -1,0 +1,30 @@
+
+listen 80;
+
+# process php files
+location ~ \.php$ {
+    try_files $uri =404;
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+    fastcgi_index index.php;
+    include fastcgi.conf;
+}
+
+# serve static files directly
+location ~* \.(jpg|jpeg|gif|css|png|js|ico|html)$ {
+    access_log off;
+    log_not_found off;
+    expires max;
+}
+
+# robots.txt
+location = /robots.txt {
+    allow all;
+    access_log off;
+    log_not_found off;
+}
+
+# prevent access to htaccess/htpasswd
+location ~ /\.ht {
+    deny all;
+}

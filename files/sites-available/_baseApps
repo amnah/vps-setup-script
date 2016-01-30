@@ -16,41 +16,16 @@ server {
     root /var/www/phpMyAdmin;
     access_log /var/log/nginx/phpMyAdmin/access.log;
     error_log /var/log/nginx/phpMyAdmin/error.log;
+    include /etc/nginx/sites-available/_common;
 
-    listen 80;
     #listen 443 default_server ssl;
     #ssl_certificate     /etc/nginx/ssl/example.site_combined.crt;
     #ssl_certificate_key /etc/nginx/ssl/example.site.key;
+    #if ($scheme = http) {
+    #    return 301 https://example.site$request_uri;
+    #}
 
     location / {
         try_files $uri $uri/ /index.php;
-    }
-
-    # process php files
-    location ~ \.php$ {
-        try_files $uri =404;
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass unix:/var/run/php5-fpm.sock;
-        fastcgi_index index.php;
-        include fastcgi.conf;
-    }
-
-    # serve static files directly
-    location ~* \.(jpg|jpeg|gif|css|png|js|ico|html)$ {
-        access_log off;
-        log_not_found off;
-        expires max;
-    }
-
-    # robots.txt
-    location = /robots.txt {
-        allow all;
-        access_log off;
-        log_not_found off;
-    }
-
-    # prevent access to htaccess/htpasswd
-    location ~ /\.ht {
-        deny all;
     }
 }
