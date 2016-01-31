@@ -19,7 +19,7 @@ backupDir="/root/dumps"
 
 # calculate current date ( YYYY-MM-DD ) and backup file
 date=$( date +%Y%m%d-%H%M%S )
-filename="$date.tar.gz"
+filename="$date.tar.bz2"
 backupFile="$backupDir/$filename"
 
 # create backup directory if it doesn't exist
