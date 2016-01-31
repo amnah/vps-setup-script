@@ -42,7 +42,8 @@ for db in $( mysql -u $dbUsername --password=$dbPassword -Bse "show databases" )
 
 done
 
-tar -czhpf $backupFile /data --exclude "vendor" --exclude "vendor2" --exclude "phpMyAdmin*" \
-        --exclude "web/assets/*" --exclude "node_modules" --exclude ".git"
+tar -chp /data --exclude "vendor" --exclude "vendor2" --exclude "phpMyAdmin*" \
+    --exclude "web/assets/*" --exclude "node_modules" --exclude ".git"
+    | lbzip2 -9 > $backupFile
 
 #./dropbox_uploader.sh upload $backupFile $filename
