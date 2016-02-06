@@ -91,13 +91,13 @@ if $doWebServer ; then
     export LANG=C.UTF-8
     add-apt-repository -y ppa:nginx/stable
     add-apt-repository -y ppa:git-core/ppa
-    add-apt-repository -y ppa:ondrej/php-7.0
+    add-apt-repository -y ppa:ondrej/php
     add-apt-repository -y ppa:chris-lea/redis-server
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
     add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
     apt-get update
     apt-get -y install lbzip2 unzip git redis-server memcached curl nginx
-    apt-get -y install php7.0 php7.0-cli php7.0-fpm php7.0-mysql php7.0-curl php7.0-dev php7.0-gd
+    apt-get -y install php php-cli php-fpm php-mysql php-curl php-dev php-gd
     apt-get -y purge apache2* libapache2* php5-*
     DEBIAN_FRONTEND=noninteractive apt-get -y install mariadb-server mariadb-client
     mysqladmin -u root password $mariadbPassword
