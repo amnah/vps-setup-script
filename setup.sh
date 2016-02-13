@@ -108,6 +108,7 @@ if $doWebServer ; then
     rm /etc/nginx/sites-enabled/default
     wget ${downloadPath}files/nginx.conf -O /etc/nginx/nginx.conf
     wget ${downloadPath}files/sites-available/_baseApps -O /etc/nginx/sites-available/_baseApps
+    wget ${downloadPath}files/sites-available/_common -O /etc/nginx/sites-available/_common
 
     # set up data dir
     mkdir -p /data
