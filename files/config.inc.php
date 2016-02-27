@@ -17,8 +17,8 @@ $cfg['Servers'][$i]['extension'] = 'mysqli';
 $cfg['Servers'][$i]['AllowNoPassword'] = false;
 $cfg['Servers'][$i]['user'] = '';
 $cfg['Servers'][$i]['password'] = '';
+$cfg['Servers'][$i]['hide_db'] = '^(performance_schema|information_schema|mysql)$';
 
- 
 $cfg['DefaultLang'] = 'en';
 $cfg['ServerDefault'] = 1;
 $cfg['UploadDir'] = '';
