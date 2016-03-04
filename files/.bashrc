@@ -19,6 +19,7 @@ alias composer="php ~/composer.phar"
 alias nano="nano --tabstospaces --tabsize=4 --const --nonewlines --autoindent"
 alias shutdown="sudo shutdown -h now"
 alias reboot="sudo reboot"
+alias du="du -h --max-depth=1"
 
 # ---------------------------------------
 # vnc
