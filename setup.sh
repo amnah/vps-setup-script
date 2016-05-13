@@ -11,7 +11,7 @@ doVnc=false
 #email=""
 
 # set fail2ban
-installFail2Ban=true
+makeSecure=true
 
 # user
 username="ubuntu"
@@ -138,7 +138,7 @@ if $doWebServer ; then
 
     # add nginx configurations for fail2ban
     # http://snippets.aktagon.com/snippets/554-how-to-secure-an-nginx-server-with-fail2ban
-    if $installFail2Ban ; then
+    if $makeSecure ; then
         apt-get -y install fail2ban
         wget ${downloadPath}files/filter.d/proxy.conf -O /etc/fail2ban/filter.d/proxy.conf
         wget ${downloadPath}files/filter.d/nginx-auth.conf -O /etc/fail2ban/filter.d/nginx-auth.conf
@@ -151,6 +151,10 @@ if $doWebServer ; then
         cat /etc/fail2ban/jail.conf /etc/fail2ban/jail.local.tmp > /etc/fail2ban/jail.local
         rm /etc/fail2ban/jail.local.tmp
         service fail2ban restart
+
+        ufw allow openssh
+        ufw allow 'nginx full'
+        ufw enable
     fi
 
     # restart nginx services
