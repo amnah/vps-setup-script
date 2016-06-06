@@ -7,10 +7,10 @@ doSetup=true
 doWebServer=true
 doVnc=false
 
-# set email for logwatch (will not install logwatch if empty)
+# set email for logwatch (leave empty if you don't want logwatch)
 #email=""
 
-# set fail2ban
+# make secure via and fail2ban and ufw
 makeSecure=true
 
 # user
@@ -23,9 +23,6 @@ pubkey=""
 
 # mariadb root password
 mariadbPassword="z"
-
-# ssh port
-sshPort="22"
 
 # download path (via wget)
 # ensure / at end
@@ -59,7 +56,6 @@ if $doSetup ; then
     chmod 644 ~/.bashrc
 
     # prevent root login
-    sed -i "s/Port 22/Port $sshPort/g" /etc/ssh/sshd_config
     sed -i "s/PermitRootLogin yes/#PermitRootLogin yes/g" /etc/ssh/sshd_config
     echo -e "\n\nPermitRootLogin no\nPasswordAuthentication no\n#AllowUsers username@(your-ip) username@(another-ip-if-any)" >> /etc/ssh/sshd_config
 
@@ -110,7 +106,7 @@ if $doWebServer ; then
     wget ${downloadPath}files/sites-available/_baseApps -O /etc/nginx/sites-available/_baseApps
     wget ${downloadPath}files/sites-available/_common -O /etc/nginx/sites-available/_common
 
-    # set up data dir
+    # set up data dir with symlinks to important directories
     mkdir -p /data
     mkdir -p /var/www
     ln -s /var/www /data/
