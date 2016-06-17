@@ -92,11 +92,18 @@ if $doWebServer ; then
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
     add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
     apt-get update
-    apt-get -y install lbzip2 unzip htop git redis-server memcached curl nginx
-    apt-get -y install php php-cli php-fpm php-mysql php-curl php-dev php-gd php-mbstring
+    apt-get -y install lbzip2 unzip htop git redis-server curl nginx mcrypt memcached
+    apt-get -y install php php-cli php-fpm php-mysql php-curl php-dev php-gd php-mbstring php-mcrypt php-memcached
     apt-get -y purge apache2* libapache2* php5-*
     DEBIAN_FRONTEND=noninteractive apt-get -y install mariadb-server mariadb-client
     mysqladmin -u root password $mariadbPassword
+
+    # install mongo
+    # https://github.com/mongodb/mongo-php-driver/issues/138#issuecomment-184749966
+    #apt-get -y install autoconf g++ make openssl libssl-dev libcurl4-openssl-dev libcurl4-openssl-dev pkg-config libsasl2-dev
+    #pecl install mongodb
+    #echo -e "\nextension=mongodb.so\n" >> /etc/php/7.0/cli/php.ini
+    #echo -e "\nextension=mongodb.so\n" >> /etc/php/7.0/fpm/php.ini
 
     # set up nginx
     mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
@@ -133,19 +140,12 @@ if $doWebServer ; then
     sed -i "s/rotate 7/rotate 52/g" /etc/logrotate.d/mysql-server
 
     # add nginx configurations for fail2ban
-    # http://snippets.aktagon.com/snippets/554-how-to-secure-an-nginx-server-with-fail2ban
     if $makeSecure ; then
         apt-get -y install fail2ban
-        wget ${downloadPath}files/filter.d/proxy.conf -O /etc/fail2ban/filter.d/proxy.conf
-        wget ${downloadPath}files/filter.d/nginx-auth.conf -O /etc/fail2ban/filter.d/nginx-auth.conf
-        wget ${downloadPath}files/filter.d/nginx-login.conf -O /etc/fail2ban/filter.d/nginx-login.conf
-        wget ${downloadPath}files/filter.d/nginx-noscript.conf -O /etc/fail2ban/filter.d/nginx-noscript.conf
-        #wget ${downloadPath}files/filter.d/nginx-dos.conf -O /etc/fail2ban/filter.d/nginx-dos.conf
-        wget ${downloadPath}files/jail.local.tmp -O /etc/fail2ban/jail.local.tmp
-
-        # combine the tmp jail.local.tmp into the preconfigured jail.conf
-        cat /etc/fail2ban/jail.conf /etc/fail2ban/jail.local.tmp > /etc/fail2ban/jail.local
-        rm /etc/fail2ban/jail.local.tmp
+        cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+        sed -i "s/\[nginx-http-auth\]/\[nginx-http-auth\]\nenabled = true/g" /etc/fail2ban/jail.local
+        sed -i "s/\[nginx-botsearch\]/\[nginx-botsearch\]\nenabled = true/g" /etc/fail2ban/jail.local
+        sed -i "s/nginx\//nginx\/*\//g" /etc/fail2ban/paths-common.conf
         service fail2ban restart
 
         ufw allow openssh
