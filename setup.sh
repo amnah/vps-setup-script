@@ -100,7 +100,7 @@ if $doWebServer ; then
 
     # install mongo
     # https://github.com/mongodb/mongo-php-driver/issues/138#issuecomment-184749966
-    #apt-get -y install autoconf g++ make openssl libssl-dev libcurl4-openssl-dev libcurl4-openssl-dev pkg-config libsasl2-dev
+    #apt-get -y install autoconf g++ make openssl libssl-dev libcurl4-openssl-dev libcurl4-openssl-dev pkg-config libsasl2-dev libpcre3-dev
     #pecl install mongodb
     #echo -e "\nextension=mongodb.so\n" >> /etc/php/7.0/cli/php.ini
     #echo -e "\nextension=mongodb.so\n" >> /etc/php/7.0/fpm/php.ini
