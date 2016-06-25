@@ -10,7 +10,7 @@ location ~ \.php$ {
     include fastcgi.conf;
 }
 
-# serve static files directly
+# disable log for asset files
 location ~* \.(jpg|jpeg|gif|css|png|js|ico|html)$ {
     access_log off;
     log_not_found off;

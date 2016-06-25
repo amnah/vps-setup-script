@@ -7,14 +7,11 @@
 # you can launch this script at startup using:
 #     sudo chmod +x startNode.sh
 #     sudo nano /etc/rc.local
-#         su $USER -c '/home/$USER/startNode.sh'
-# note: replace $USER with the real user
-# note2: put the command before "exit 0"
+#         su ubuntu -c '/home/ubuntu/startNode.sh'
+# note: put the command before "exit 0"
 
 
 # start nvm on the user
-# note that you can leave it as $USER here
-# you only need to change it in /etc/rc.local
 export NVM_DIR="/home/$USER/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
