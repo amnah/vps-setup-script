@@ -12,9 +12,9 @@ location ~ \.php$ {
 
 # disable log for asset files
 location ~* \.(jpg|jpeg|gif|css|png|js|ico|html)$ {
+    expires 30d;
     access_log off;
     log_not_found off;
-    expires max;
 }
 
 # robots.txt
@@ -27,4 +27,6 @@ location = /robots.txt {
 # prevent access to htaccess/htpasswd
 location ~ /\.ht {
     deny all;
+    access_log off;
+    log_not_found off;
 }
