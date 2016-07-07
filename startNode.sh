@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # install nvm: https://github.com/creationix/nvm
 # note: use your regular user. NOT root user!
