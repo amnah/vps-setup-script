@@ -93,7 +93,8 @@ if $doWebServer ; then
     add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
     apt-get update
     apt-get -y install lbzip2 unzip htop git redis-server curl nginx mcrypt memcached
-    apt-get -y install php php-cli php-fpm php-mysql php-curl php-dev php-gd php-mbstring php-mcrypt php-memcached
+    apt-get -y install php php-cli php-fpm php-mysql php-curl php-dev php-gd php-mbstring php-mcrypt 
+    apt-get -y install php-memcached php-xml php-intl
     apt-get -y purge apache2* libapache2* php5-*
     DEBIAN_FRONTEND=noninteractive apt-get -y install mariadb-server mariadb-client
     mysqladmin -u root password $mariadbPassword
