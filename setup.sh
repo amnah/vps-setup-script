@@ -90,7 +90,6 @@ if $doWebServer ; then
     add-apt-repository -y ppa:ondrej/php
     add-apt-repository -y ppa:chris-lea/redis-server
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-    add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
     add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.osuosl.org/pub/mariadb/repo/10.1/ubuntu xenial main'
     apt-get update
     apt-get -y install lbzip2 unzip htop git redis-server curl nginx mcrypt memcached
@@ -127,15 +126,9 @@ if $doWebServer ; then
     mkdir /etc/nginx/ssl
     ln -s /etc/nginx/ssl /data/
 
-    # set up nginx logs
+    # set up nginx logs and logrotate
     mkdir /var/log/nginx/_
     mkdir /var/log/nginx/phpMyAdmin
-    touch /var/log/nginx/_/access.log
-    touch /var/log/nginx/_/error.log
-    touch /var/log/nginx/phpMyAdmin/access.log
-    touch /var/log/nginx/phpMyAdmin/error.log
-
-    # update logrotate settings for nginx
     sed -i "s/*.log/*.log \/var\/log\/nginx\/*\/*.log/g" /etc/logrotate.d/nginx
 
     # add nginx configurations for fail2ban
