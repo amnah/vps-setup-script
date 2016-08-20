@@ -89,8 +89,9 @@ if $doWebServer ; then
     add-apt-repository -y ppa:git-core/ppa
     add-apt-repository -y ppa:ondrej/php
     add-apt-repository -y ppa:chris-lea/redis-server
-    apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
+    apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
     add-apt-repository 'deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main'
+    add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.osuosl.org/pub/mariadb/repo/10.1/ubuntu xenial main'
     apt-get update
     apt-get -y install lbzip2 unzip htop git redis-server curl nginx mcrypt memcached
     apt-get -y install php php-cli php-fpm php-mysql php-curl php-dev php-gd php-mbstring php-mcrypt 
