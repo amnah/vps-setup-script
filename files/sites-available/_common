@@ -5,14 +5,13 @@ listen 80;
 location ~ \.php$ {
     try_files $uri =404;
     fastcgi_split_path_info ^(.+\.php)(/.+)$;
-    fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+    fastcgi_pass unix:/var/run/php/php7.1-fpm.sock;
     fastcgi_index index.php;
     include fastcgi.conf;
 }
 
 # disable log for asset files
 location ~* \.(jpg|jpeg|gif|css|png|js|ico|html)$ {
-    expires 30d;
     access_log off;
     log_not_found off;
 }

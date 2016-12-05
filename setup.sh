@@ -93,8 +93,8 @@ if $doWebServer ; then
     add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.osuosl.org/pub/mariadb/repo/10.1/ubuntu xenial main'
     apt-get update
     apt-get -y install lbzip2 unzip htop git redis-server curl nginx mcrypt memcached
-    apt-get -y install php php-cli php-fpm php-mysql php-curl php-dev php-gd php-mbstring php-mcrypt 
-    apt-get -y install php-memcached php-xml php-intl
+    apt-get -y install php7.1 php7.1-cli php7.1-fpm php7.1-mysql php7.1-curl php7.1-dev php7.1-gd php7.1-mbstring php7.1-mcrypt 
+    apt-get -y install php7.1-memcached php7.1-xml php7.1-intl
     apt-get -y purge apache2* libapache2* php5-*
     DEBIAN_FRONTEND=noninteractive apt-get -y install mariadb-server mariadb-client
     mysqladmin -u root password $mariadbPassword
@@ -103,8 +103,8 @@ if $doWebServer ; then
     # https://github.com/mongodb/mongo-php-driver/issues/138#issuecomment-184749966
     #apt-get -y install autoconf g++ make openssl libssl-dev libcurl4-openssl-dev libcurl4-openssl-dev pkg-config libsasl2-dev libpcre3-dev
     #pecl install mongodb
-    #echo -e "\nextension=mongodb.so\n" >> /etc/php/7.0/cli/php.ini
-    #echo -e "\nextension=mongodb.so\n" >> /etc/php/7.0/fpm/php.ini
+    #echo -e "\nextension=mongodb.so\n" >> /etc/php/7.1/cli/php.ini
+    #echo -e "\nextension=mongodb.so\n" >> /etc/php/7.1/fpm/php.ini
 
     # set up nginx
     mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
@@ -146,7 +146,7 @@ if $doWebServer ; then
     fi
 
     # restart nginx services
-    service php7.0-fpm restart
+    service php7.1-fpm restart
     service nginx restart
 
     # change owner and permissions
