@@ -1,6 +1,5 @@
 
 # scp .bashrc rootq@10.2.0.3:.bashrc
-# source "${HOME}/.bash_aliases"
 # rsync -av ec2:~/se/bitstarter /d/node
 # find / -name "*.sock"
 # find . -type f -print0 | xargs -0 chmod 0664 && find . -type d -print0 | xargs -0 chmod 0775 && chown -R www-data.www-data .

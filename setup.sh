@@ -109,10 +109,9 @@ if $doWebServer ; then
     # set up nginx
     mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
     mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
-    rm /etc/nginx/sites-enabled/default
-    wget ${downloadPath}files/nginx.conf -O /etc/nginx/nginx.conf
-    wget ${downloadPath}files/sites-available/_baseApps -O /etc/nginx/sites-available/_baseApps
+    wget ${downloadPath}files/sites-available/default -O /etc/nginx/sites-available/default
     wget ${downloadPath}files/sites-available/_common -O /etc/nginx/sites-available/_common
+    wget ${downloadPath}files/nginx.conf -O /etc/nginx/nginx.conf
 
     # set up data dir with symlinks to important directories
     mkdir -p /data
@@ -121,15 +120,13 @@ if $doWebServer ; then
     ln -s /etc/nginx/nginx.conf /data/
     ln -s /etc/nginx/sites-available /data/
     ln -s /etc/nginx/sites-enabled /data/
-    ln -s /etc/nginx/sites-available/_baseApps /etc/nginx/sites-enabled/
     ln -s /var/log/nginx /data/log
     mkdir /etc/nginx/ssl
     ln -s /etc/nginx/ssl /data/
 
     # set up nginx logs and logrotate
     mkdir /var/log/nginx/_
-    mkdir /var/log/nginx/phpMyAdmin
-    sed -i "s/*.log/*.log \/var\/log\/nginx\/*\/*.log/g" /etc/logrotate.d/nginx
+    sed -i "s/*.log/*.log \/var\/log\/nginx\/*\/*.log/g" /etc/logrotate.d/nginx # add log files in subdirectories
 
     # add nginx configurations for fail2ban
     if $makeSecure ; then
@@ -157,20 +154,13 @@ if $doWebServer ; then
     #find /var/www -type f -print0 | xargs -0 chmod 0664 # not needed because there are no files in there
 
     # download backup and site scripts
-    wget ${downloadPath}backup.sh
-    chmod 700 backup.sh
-    wget ${downloadPath}site.sh -O /home/$username/site.sh
-    wget ${downloadPath}phpmyadmin.sh -O /home/$username/phpmyadmin.sh
+    wget ${downloadPath}backup.sh  
     wget ${downloadPath}startNode.sh -O /home/$username/startNode.sh
-    wget ${downloadPath}files/example.site -O /home/$username/example.site
-    wget ${downloadPath}files/config.inc.php -O /home/$username/config.inc.php
-    chown $username.$username /home/$username/site.sh /home/$username/phpmyadmin.sh
-    chmod 700 /home/$username/site.sh /home/$username/phpmyadmin.sh
+    chmod 700 backup.sh
 
-    # display message about site.sh
+    # display success message
     echo -e "------------------------------------------"
-    echo -e "Now log into your '$username' account and modify/run : \n"
-    echo -e "   ./site.sh"
+    echo -e "Done - You can now log into your '$username' account \n"
 fi
 
 if $doVnc ; then

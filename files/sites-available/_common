@@ -11,7 +11,7 @@ location ~ \.php$ {
 }
 
 # disable log for asset files
-location ~* \.(jpg|jpeg|gif|css|png|js|ico|html)$ {
+location ~* \.(jpg|jpeg|gif|css|png|js|ico|html|eot|otf|tff|woff|woff2)$ {
     access_log off;
     log_not_found off;
 }

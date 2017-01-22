@@ -1,20 +1,25 @@
 
 # -----------------------------------------------------
-# invalid subdomains - redirect to main site
+# default/invalid server
 # -----------------------------------------------------
+server {
+    listen 80 default_server;
+    server_name _;
+    return 444;
+}
+
+# -----------------------------------------------------
+# example.site
+# -----------------------------------------------------
+# invalid subdomains - redirect to main site
 #server {
 #    server_name "~^(?<subdomain>\w+)\.example\.site$";  # note the escaped period - example\.site
 #    return 301 $scheme://example.site$request_uri;
 #}
-
-# -----------------------------------------------------
-# main site
-# -----------------------------------------------------
 server {
-
     server_name example.site;
     root /var/www/example.site;
-    access_log /var/log/nginx/example.site/access.log;
+    access_log /var/log/nginx/example.site/access.log; # dont forget to make the log directory
     error_log /var/log/nginx/example.site/error.log;
     include /etc/nginx/sites-available/_common;
 
@@ -28,7 +33,7 @@ server {
     location / {
         # laravel, yii2, wordpress
         # http://wiki.nginx.org/WordPress
-        try_files $uri $uri/ /index.php?$args;
+        try_files $uri $uri/ /index.php?$query_string;
 
         # joomla, drupal, etc
         # http://wiki.nginx.org/Pitfalls (Front Controller Pattern based packages)
