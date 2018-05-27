@@ -7,7 +7,7 @@
 # bash options and aliases
 # ---------------------------------------
 export LS_OPTIONS="--color=auto --group-directories-first"
-PS1="\[\e]0;\w\a\]\n\[\e[32m\][\u@\h] [\d \t] [\!] \[\e[33m\]\w\[\e[0m\]\\n$ "
+PS1="\[\e]0;\w\a\]\n\[\e[\033[01;32m\][\u@\h] [\d \t] [\!] \[\e[33m\]\w\[\e[0m\]\\n$ "
 alias ls="ls $LS_OPTIONS -hA"
 alias ll="ls $LS_OPTIONS -lhA"
 alias rm="rm -i"
