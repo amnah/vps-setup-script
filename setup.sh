@@ -45,9 +45,8 @@ if $doSetup ; then
     apt-get -y install nano python-software-properties software-properties-common
 
     # update time
-    #rm -f /etc/localtime
-    #ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
-    timedatectl set-timezone America/New_York
+    rm -f /etc/localtime
+    ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
     apt-get -y install ntp
     service ntp restart
 
