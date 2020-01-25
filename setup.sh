@@ -42,11 +42,11 @@ if $doSetup ; then
 
     # nano + other apps for add-apt-repository cmd
     # http://stackoverflow.com/a/16032073 - page deleted :(
-    apt-get -y install nano python-software-properties software-properties-common
+    apt-get -y install nano software-properties-common
 
     # update time
-    rm -f /etc/localtime
-    ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
+    #rm -f /etc/localtime
+    #ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
     apt-get -y install ntp
     service ntp restart
 
@@ -85,15 +85,15 @@ fi
 if $doWebServer ; then
     # install git nginx php mariadb
     export LANG=C.UTF-8
-    add-apt-repository -y ppa:nginx/stable
+    add-apt-repository -y ppa:nginx/mainline
     add-apt-repository -y ppa:git-core/ppa
     add-apt-repository -y ppa:ondrej/php
     add-apt-repository -y ppa:chris-lea/redis-server
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-    add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.osuosl.org/pub/mariadb/repo/10.1/ubuntu xenial main'
+    add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.osuosl.org/pub/mariadb/repo/10.4/ubuntu xenial main'
     apt-get update
     apt-get -y install lbzip2 unzip htop git redis-server curl nginx mcrypt memcached
-    apt-get -y install php7.1 php7.1-cli php7.1-fpm php7.1-mysql php7.1-curl php7.1-dev php7.1-gd php7.1-mbstring php7.1-mcrypt php7.1-memcached php7.1-xml php7.1-intl
+    apt-get -y install php php-cli php-fpm php-mysql php-curl php-dev php-gd php-mbstring php-memcached php-xml php-intl
     apt-get -y purge apache2* libapache2* php5-*
     DEBIAN_FRONTEND=noninteractive apt-get -y install mariadb-server mariadb-client
     mysqladmin -u root password $mariadbPassword
